@@ -218,39 +218,17 @@
     margin-bottom: clamp(28px, 6vw, 44px);
   }
 
-  /* GALLERY — carrossel de projetos */
+  /* GALLERY — projetos em scroll, imagens em swipe */
 
-  /* faixa exterior: swipe entre projetos */
-  .projects-wrap{
-    margin: 0 calc(-1 * clamp(20px, 5vw, 48px));
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    cursor: grab;
-  }
-  .projects-wrap:active{ cursor: grabbing; }
-  .projects-wrap::-webkit-scrollbar{ display: none; }
-
-  .projects-track{
-    display: flex;
-    gap: 16px;
-    padding: 0 clamp(20px, 5vw, 48px);
-    padding-right: calc(clamp(20px, 5vw, 48px) * 2);
-  }
-
-  /* card de um projeto */
   .project-card{
-    flex: 0 0 min(420px, 88vw);
-    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    user-select: none;
+    margin-bottom: 36px;
   }
+  .project-card:last-child{ margin-bottom: 0; }
 
-  /* carrossel interno de imagens do projeto */
+  /* swipe de imagens dentro de cada projeto */
   .project-imgs{
     overflow-x: auto;
     overflow-y: hidden;
@@ -258,16 +236,23 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     border-radius: 8px;
+    /* estende até às margens do ecrã */
+    margin: 0 calc(-1 * clamp(20px, 5vw, 48px));
+    padding: 0 clamp(20px, 5vw, 48px);
+    cursor: grab;
   }
+  .project-imgs:active{ cursor: grabbing; }
   .project-imgs::-webkit-scrollbar{ display: none; }
 
   .project-imgs-track{
     display: flex;
-    gap: 0;
+    gap: 10px;
+    /* padding direito para se ver que há mais imagens */
+    padding-right: clamp(20px, 5vw, 48px);
   }
 
   .project-img{
-    flex: 0 0 100%;
+    flex: 0 0 min(360px, 80vw);
     aspect-ratio: 4/3;
     scroll-snap-align: start;
     border: 1px dashed var(--line);
@@ -281,6 +266,7 @@
     background: rgba(22,92,56,0.03);
     overflow: hidden;
     position: relative;
+    user-select: none;
   }
   .project-img img{
     width: 100%;
@@ -300,12 +286,13 @@
     padding: 0 16px;
   }
 
-  /* rodapé do card: título + dots das imagens */
+  /* rodapé: título + dots */
   .project-footer{
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    padding-top: 4px;
   }
   .project-name{
     font-family: 'Space Grotesk', sans-serif;
@@ -318,7 +305,6 @@
     margin-top: 2px;
   }
 
-  /* dots das imagens dentro do projeto */
   .img-dots{
     display: flex;
     gap: 5px;
@@ -337,28 +323,6 @@
   .img-dots button.active{
     background: var(--accent);
     transform: scale(1.5);
-  }
-
-  /* dots dos projetos (exterior) */
-  .project-dots{
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 18px;
-  }
-  .project-dots button{
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    border: none;
-    background: var(--line);
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .project-dots button.active{
-    background: var(--accent);
-    transform: scale(1.4);
   }
 
   /* WORK INDEX */
@@ -622,8 +586,7 @@
   <section class="section" id="galeria">
     <p class="section-label mono">Galeria de projetos</p>
 
-    <div class="projects-wrap" id="projectsWrap">
-      <div class="projects-track" id="projectsTrack">
+    <div id="projectsList">
 
         <!-- PROJETO 1 -->
         <div class="project-card">
@@ -756,9 +719,7 @@
           </div>
         </div>
 
-      </div>
     </div>
-    <div class="project-dots" id="projectDots"></div>
   </section>
 
   <section class="section" id="sobre">
@@ -834,64 +795,36 @@
     if (window.innerWidth >= 700) closeMenu();
   });
 
-  // GALERIA — dois níveis: projetos (exterior) + imagens (interior)
-
-  function makeDraggable(el) {
-    let down = false, sx = 0, ss = 0;
-    el.addEventListener('mousedown', e => { down = true; sx = e.pageX; ss = el.scrollLeft; });
-    window.addEventListener('mousemove', e => { if (down) el.scrollLeft = ss - (e.pageX - sx); });
-    window.addEventListener('mouseup', () => { down = false; });
-  }
-
-  function initImgDots(card) {
+  // GALERIA — swipe de imagens por projeto
+  document.querySelectorAll('.project-card').forEach(card => {
     const wrap = card.querySelector('.project-imgs');
     const imgs  = card.querySelectorAll('.project-img');
     const dots  = card.querySelector('.img-dots');
-    if (imgs.length <= 1) return;
 
-    imgs.forEach((_, i) => {
-      const btn = document.createElement('button');
-      btn.setAttribute('aria-label', 'Foto ' + (i + 1));
-      if (i === 0) btn.classList.add('active');
-      btn.addEventListener('click', () => {
-        wrap.scrollTo({ left: imgs[i].offsetWidth * i, behavior: 'smooth' });
+    // dots só aparecem se houver mais do que 1 imagem
+    if (imgs.length > 1) {
+      imgs.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.setAttribute('aria-label', 'Foto ' + (i + 1));
+        if (i === 0) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+          wrap.scrollTo({ left: imgs[i].offsetWidth * i, behavior: 'smooth' });
+        });
+        dots.appendChild(btn);
       });
-      dots.appendChild(btn);
-    });
 
-    wrap.addEventListener('scroll', () => {
-      const active = Math.round(wrap.scrollLeft / imgs[0].offsetWidth);
-      dots.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === active));
-    }, { passive: true });
+      wrap.addEventListener('scroll', () => {
+        const active = Math.round(wrap.scrollLeft / imgs[0].offsetWidth);
+        dots.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === active));
+      }, { passive: true });
+    }
 
-    makeDraggable(wrap);
-  }
-
-  // inicializar cada card de projeto
-  const projectsWrap = document.getElementById('projectsWrap');
-  const projectDots  = document.getElementById('projectDots');
-  const cards = projectsWrap.querySelectorAll('.project-card');
-
-  cards.forEach((card, i) => {
-    initImgDots(card);
-
-    const btn = document.createElement('button');
-    btn.setAttribute('aria-label', 'Projeto ' + (i + 1));
-    if (i === 0) btn.classList.add('active');
-    btn.addEventListener('click', () => {
-      card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-    });
-    projectDots.appendChild(btn);
+    // drag com rato no desktop
+    let down = false, sx = 0, ss = 0;
+    wrap.addEventListener('mousedown', e => { down = true; sx = e.pageX; ss = wrap.scrollLeft; });
+    window.addEventListener('mousemove', e => { if (down) wrap.scrollLeft = ss - (e.pageX - sx); });
+    window.addEventListener('mouseup', () => { down = false; });
   });
-
-  // atualizar dots dos projetos
-  projectsWrap.addEventListener('scroll', () => {
-    const w = cards[0].offsetWidth + 16;
-    const active = Math.round(projectsWrap.scrollLeft / w);
-    projectDots.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === active));
-  }, { passive: true });
-
-  makeDraggable(projectsWrap);
 </script>
 
 </body>
