@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Maria Teresa Creations — Soluções por medida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 283.4645669 288.1232219'%3E%3Cpath fill='%23165c38' d='M95.7673351,95.1845047v98.5366905h11.1879547v-74.4415703l30.9811225,58.1985272v16.2430431h11.189263v-16.2479495l30.9785057-58.1936208v74.4415703h11.189263v-98.5366905h-95.5261089ZM112.6055274,105.7980806h25.3308848v47.5826616l-25.3308848-47.5826616ZM149.1256753,105.7980806h25.3282681l-25.3282681,47.5777552v-47.5777552Z'/%3E%3Ccircle fill='%23165c38' cx='274.774484' cy='170.5735213' r='5.6692913'/%3E%3Ccircle fill='%23165c38' cx='12.2862951' cy='170.5735213' r='5.6692913'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F8F7F4;
+    --ink: #16140F;
+    --accent: #165C38;
+    --muted: #8C8A82;
+    --line: #E4E2DB;
+    --bg-rgb: 248,247,244;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+
+  .wrap{
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 48px);
+  }
+
+  .mono{
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+
+  /* NAV — mobile-first: hambúrguer por defeito, nav horizontal só >= 700px */
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(var(--bg-rgb), 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 16px clamp(20px, 5vw, 48px);
+    max-width: 920px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .logo{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .logo-mark{
+    width: 19px;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .logo-mark path, .logo-mark polygon, .logo-mark rect, .logo-mark circle{
+    fill: var(--ink);
+  }
+
+  .nav-toggle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .nav-toggle svg{ width: 22px; height: 22px; }
+  .nav-toggle .icon-close{ display: none; }
+  .nav-toggle[aria-expanded="true"] .icon-open{ display: none; }
+  .nav-toggle[aria-expanded="true"] .icon-close{ display: block; }
+
+  .nav-links{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px clamp(20px, 5vw, 48px) 18px;
+    display: none;
+  }
+  .nav-links.is-open{ display: flex; }
+  .nav-links a{
+    color: var(--ink);
+    font-size: 1rem;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+    transition: color 0.2s ease;
+  }
+  .nav-links a:last-child{ border-bottom: none; }
+  .nav-links a:hover, .nav-links a:focus-visible{ color: var(--accent); }
+
+  @media (min-width: 700px){
+    .nav-toggle{ display: none; }
+    .nav-links{
+      position: static;
+      display: flex !important;
+      flex-direction: row;
+      gap: clamp(14px, 3vw, 28px);
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .nav-links a{
+      color: var(--muted);
+      font-size: 0.8rem;
+      padding: 8px 0;
+      border-bottom: none;
+    }
+    .nav-links a:hover, .nav-links a:focus-visible{ color: var(--ink); }
+  }
+
+  /* HERO */
+  .hero{
+    padding: clamp(56px, 14vw, 120px) 0 clamp(40px, 8vw, 72px);
+  }
+  .eyebrow{
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width: 6px; height:6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display:inline-block;
+    flex-shrink:0;
+  }
+  h1{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 9vw, 5.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+  h1 em{
+    font-style: normal;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .hero-sub{
+    margin-top: 22px;
+    max-width: 480px;
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    color: #45433B;
+  }
+  .hero-cta{
+    margin-top: 36px;
+    display:flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn{
+    font-size: 0.9rem;
+    padding: 15px 24px;
+    border-radius: 100px;
+    border: 1px solid var(--ink);
+    transition: all 0.2s ease;
+    display:block;
+    text-align: center;
+  }
+  .btn-primary{
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .btn-primary:hover{ background: var(--accent); border-color: var(--accent); }
+  .btn-ghost{ border-color: var(--line); color: var(--ink); }
+  .btn-ghost:hover{ border-color: var(--ink); }
+
+  @media (min-width: 480px){
+    .hero-cta{ flex-direction: row; flex-wrap: wrap; }
+    .btn{ display: inline-block; }
+  }
+
+  /* SECTION LABEL */
+  .section{
+    padding: clamp(48px, 10vw, 88px) 0;
+    border-top: 1px solid var(--line);
+  }
+  .section-label{
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: clamp(28px, 6vw, 44px);
+  }
+
+  /* GALLERY */
+  .gallery-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .gallery-item{
+    aspect-ratio: 4/3;
+    border: 1px dashed var(--line);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--muted);
+    background: rgba(22,92,56,0.03);
+    overflow: hidden;
+    position: relative;
+  }
+  .gallery-item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .gallery-icon{
+    width: 26px;
+    height: 26px;
+    opacity: 0.5;
+  }
+  .gallery-caption{
+    font-size: 0.74rem;
+    text-align: center;
+    padding: 0 16px;
+  }
+  @media (min-width: 560px){
+    .gallery-grid{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 860px){
+    .gallery-grid{ grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  /* WORK INDEX */
+  .work-row{
+    display:flex;
+    align-items: baseline;
+    gap: clamp(14px, 4vw, 28px);
+    padding: clamp(18px, 4vw, 26px) 0;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: padding-left 0.25s ease;
+  }
+  .work-row:first-child{ border-top: 1px solid var(--line); }
+  .work-row:hover{ padding-left: 10px; }
+  .work-index{
+    font-size: 0.78rem;
+    color: var(--muted);
+    flex-shrink: 0;
+    width: 26px;
+  }
+  .work-info{ flex: 1; min-width: 0; }
+  .work-title{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.3rem, 4.4vw, 1.9rem);
+    font-weight: 400;
+    transition: color 0.2s ease;
+  }
+  .work-row:hover .work-title{ color: var(--accent); }
+  .work-meta{
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .work-arrow{
+    font-size: 1.1rem;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: transform 0.25s ease, color 0.2s ease;
+  }
+  .work-row:hover .work-arrow{ transform: translateX(4px); color: var(--accent); }
+
+  /* ABOUT */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .about-text{
+    font-size: clamp(1.05rem, 3vw, 1.3rem);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    line-height: 1.4;
+    max-width: 600px;
+  }
+  .skills{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .skill-tag{
+    font-size: 0.78rem;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    color: #45433B;
+  }
+
+  /* CONTACT */
+  .contact-main{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 7.5vw, 3.4rem);
+    word-break: break-word;
+    display:inline-block;
+    position: relative;
+  }
+  .contact-main span{
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 2px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.3s ease;
+  }
+  .contact-main:hover span{ background-size: 100% 2px; }
+
+  .contact-list{
+    margin-top: 36px;
+    display:flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .contact-list a{
+    font-size: 0.92rem;
+    color: var(--muted);
+    display:flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    transition: color 0.2s ease;
+  }
+  .contact-list a:hover{ color: var(--ink); }
+  .contact-list span.arrow{ color: var(--accent); }
+
+  footer{
+    padding: 28px clamp(20px, 5vw, 48px) calc(28px + env(safe-area-inset-bottom));
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.74rem;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+  }
+
+  @media (min-width: 640px){
+    .about-grid{ grid-template-columns: 1.1fr 0.9fr; align-items: start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; scroll-behavior: auto !important; }
+  }
+
+  ::selection{ background: var(--accent); color: var(--bg); }
+
+  a:focus-visible, .work-row:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#top" class="logo">
+      <svg class="logo-mark" viewBox="0 0 283.4645669 288.1232219" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M95.7673351,95.1845047v98.5366905h11.1879547v-74.4415703l30.9811225,58.1985272v16.2430431h11.189263v-16.2479495l30.9785057-58.1936208v74.4415703h11.189263v-98.5366905h-95.5261089ZM112.6055274,105.7980806h25.3308848v47.5826616l-25.3308848-47.5826616ZM149.1256753,105.7980806h25.3282681l-25.3282681,47.5777552v-47.5777552Z"/>
+        <g>
+          <polygon points="29.0696602 125.6248324 11.8387021 121.5091577 29.5057773 116.6656585 15.9254949 104.402392 33.1535647 108.5151785 34.5774438 102.559725 6.9201099 95.9544282 5.499119 101.9127698 19.0794014 114.1760363 1.4123263 119.0195356 0 124.9374425 27.6544457 131.5427394 29.0696602 125.6248324"/>
+          <path d="M40.2960654,91.4026364l-2.8824164-3.8759547,6.5590858-10.8393874,4.7684063.7567065,3.5582535-5.8803605-30.3375768-4.8059528-3.5380361,5.842814,18.3342477,24.647837,3.5380361-5.8457022ZM27.374291,74.0474861l11.0762192,1.767574-4.3727238,7.2262583-6.7034954-8.9938323Z"/>
+          <path d="M60.7675757,63.3120736l-6.2991484-6.7525947,3.3012043-3.0788135,11.0531137,2.3163306,5.0861075-4.7453007-11.896466-2.4925104c1.9148718-3.656452,1.5307422-7.8298906-1.348786-10.9173686-3.8441846-4.1185629-9.8862838-3.9192776-14.3976409.2917075l-9.3577446,8.7281185,19.4086554,20.8036525,4.450705-4.1532212ZM45.174223,46.598102l4.4218231-4.1243393c2.2094675-2.0621696,4.7972882-2.3249952,6.4637754-.540092,1.6664872,1.7877913,1.2274819,4.3525065-.9848737,6.4146761l-4.4218231,4.1243393-5.4789017-5.8745841Z"/>
+          <rect x="72.0130193" y="19.699758" width="6.1282149" height="28.4441321" transform="translate(-6.6116653 44.6085618) rotate(-31.76796)"/>
+          <path d="M96.7140229,33.5059242l11.9311243-4.2831899,3.2261113,3.5958,6.47244-2.322107-20.5292742-22.8687103-6.4320053,2.307666-1.3054631,30.7043773,6.4320053-2.307666.2050617-4.8261701ZM97.4187419,16.7053069l7.4890838,8.3584299-7.9540829,2.8535344.464999-11.2119643Z"/>
+          <polygon points="146.2580815 28.8703749 152.3752738 29.1996288 153.5998675 6.2991484 162.446402 6.7699238 162.7409976 1.273693 138.9307365 0 138.6361408 5.4962308 147.4826753 5.9698944 146.2580815 28.8703749"/>
+          <polygon points="190.1239532 32.3246534 175.0793571 27.5966819 176.950906 21.6325638 190.5745113 25.9157537 192.2265575 20.662131 178.6029523 16.3818294 180.3040978 10.9722443 195.3486939 15.7002159 196.997852 10.4494814 176.1104419 3.8846193 167.5844969 31.0105257 188.471907 37.5753878 190.1239532 32.3246534"/>
+          <path d="M200.0217898,43.8341016l4.930145-7.8096732,3.8181908,2.411641.5660858,11.2812809,5.8832487,3.7142159-.6094087-12.1419624c4.0203643.9242217,7.9598593-.5083219,10.2155378-4.0781282,3.0066087-4.7655181,1.2794694-10.5592327-3.9394949-13.8517725l-10.8220583-6.8334641-15.1918939,24.0586457,5.1496477,3.2492169ZM212.2272924,24.5034274l5.1121012,3.2289995c2.5560506,1.6144998,3.4687195,4.0492463,2.1632564,6.1171923-1.3054631,2.0650578-3.896172,2.2903369-6.4522226.6758371l-5.1121012-3.2289995,4.2889663-6.7930294Z"/>
+          <polygon points="234.9255994 73.7962133 238.9546283 70.0386745 228.1903338 58.5032326 232.762343 54.2373719 242.5099935 64.6839651 246.5361343 60.9264263 236.7913719 50.4798331 240.9388167 46.6096548 251.7031111 58.1450967 255.7292518 54.3875579 240.7857425 38.3696409 219.98209 57.7782962 234.9255994 73.7962133"/>
+          <path d="M253.7017405,82.5098909c1.2245937,4.2889663,1.4787547,6.0392111-.300372,7.0183084-1.5596241.8577933-3.5524771.1559624-5.0283436-2.5300569-1.7358039-3.1539065-1.978412-6.5186511-1.2419229-9.993147l-5.3604858-1.0686313c-1.0888487,4.3785002-.4245643,9.019826,1.9466419,13.3376742,3.3531918,6.0969749,8.4826221,7.9540829,13.2365874,5.3402684,4.6095556-2.5329451,4.2485316-6.9663209,2.4953985-12.9939792-1.2448111-4.3265128-1.4816429-6.1316332.3321422-7.1280597,1.4874193-.8202467,3.4427258-.0981986,4.6990896,2.1863619,1.3170159,2.3943118,1.7155865,5.438467,1.1523889,8.6270318l5.3835913.6816135c.779812-3.7373214.314813-7.5930588-1.9206482-11.656746-2.9921677-5.4413552-8.2226848-7.4804193-12.8293523-4.9474742-4.8261701,2.6542491-4.2600843,7.2089291-2.5647152,13.1268361Z"/>
+          <path d="M253.1125492,109.4538411l4.7712944.7451537,2.9141865,12.3296949-3.9337185,2.801547,1.5798414,6.6890544,25.0204139-17.8230375-1.5711769-6.6515079-30.3520177-4.7424125,1.5711769,6.6515079ZM274.4938402,112.7839274l-9.1440183,6.4984337-1.9437537-8.2197966,11.087772,1.7213629Z"/>
+          <path d="M31.8249961,211.8547156c5.169865-3.6593402,12.5549739-2.5416096,16.0930101,2.4607402,1.7964559,2.5329451,2.2961132,5.6810752,1.7011455,8.6385846l3.0932544.4996573c.6642843-3.7199923-.0866458-7.6508226-2.3596535-10.862493-4.5431272-6.4204525-13.8950954-8.0205113-20.4195228-3.4051793-6.5215393,4.615332-8.1562564,13.9904057-3.6131291,20.4108583,2.2730077,3.2116704,5.7619446,5.2074116,9.4559431,5.8399258l.5603094-3.0845899c-2.9892795-.4216761-5.7879383-1.9408655-7.581506-4.4766988-3.5409243-5.0023499-2.1372626-12.3354713,3.0701489-16.0208053Z"/>
+          <path d="M69.0595772,233.0309449l-8.8003233-7.4775311-18.4151171,21.6701103,2.4607402,2.0910516,6.6197378-7.7923441,5.7417272,4.8810458-1.1321716,12.4538872,2.8073234,2.3856472,1.1928236-12.7831412c4.0550226,2.1979147,8.7136776,1.7011455,11.6105349-1.7069219,3.4571667-4.0694636,2.3943118-9.9151658-2.0852752-13.7218038ZM68.652342,244.6357034c-2.4665166,2.9026337-6.3107012,2.5676034-9.8458491-.4332289l-5.8976896-5.0139026,7.8270024-9.2104467,5.9005778,5.0139026c3.5322597,3.0008323,4.4824752,6.7410419,2.0159585,9.6436756Z"/>
+          <polygon points="99.6339857 255.1400605 101.0029891 252.3962774 82.7380581 243.2753646 70.0242335 268.7290075 88.2920528 277.8499202 89.6610561 275.1090253 74.3218644 267.4495381 78.7436875 258.594339 92.5636899 265.4971197 93.9326932 262.7533366 80.1126909 255.8534441 84.294794 247.4805733 99.6339857 255.1400605"/>
+          <path d="M118.0057799,257.0173858l-17.964559,25.366997,3.445614.704719,4.089681-5.7590564,15.5384771,3.1625711,1.5105248,6.8970043,3.4485022.7018308-6.6197378-30.3722351-3.4485022-.7018308ZM109.4856113,274.5920388l9.4732723-13.3261214,3.4687195,15.9601532-12.9419918-2.6340318Z"/>
+          <polygon points="158.5126834 259.2326296 136.166736 260.0355472 136.2764873 263.0999198 145.8335172 262.7562248 146.7490743 288.1232219 149.9751856 288.004806 149.0625167 262.6378089 158.6224347 262.294114 158.5126834 259.2326296"/>
+          <rect x="168.8065377" y="256.8237337" width="3.2283291" height="28.4403206" transform="translate(-52.9549712 41.6723248) rotate(-12.0813464)"/>
+          <path d="M189.6589542,249.3781159c-7.1944882,3.191453-10.608332,12.0437638-7.3677797,19.3508915,3.2405523,7.3071277,12.1101923,10.758518,19.3046804,7.5699532,7.2320347-3.205894,10.5534564-12.0639812,7.3129041-19.3711089-3.2405523-7.3071277-12.0177701-10.7556298-19.2498048-7.5497359ZM200.3857021,273.5725067c-5.603094,2.4838458-12.5174274-.3379186-15.10236-6.1691797-2.5676034-5.7937147-.0173292-12.8149113,5.5857648-15.2987571s12.4798809.3552477,15.0474843,6.1489624c2.5878207,5.8312612.075093,12.8351286-5.5308891,15.3189744Z"/>
+          <polygon points="225.0277628 226.1281642 240.089688 243.7114817 211.6294365 237.6058422 209.1744727 239.7055584 227.6849001 261.3150166 230.1369758 259.2153005 215.0779387 241.6319829 243.5381902 247.7376224 245.9902658 245.6350181 227.4827266 224.0255599 225.0277628 226.1281642"/>
+          <path d="M261.3872214,212.7269498c-4.1243393-2.8448699-7.9367537-.7451537-12.0726457,2.9892795-3.7026631,3.3271981-6.1547388,5.0572255-8.5721561,3.3878501-2.1488154-1.4816429-2.5993735-4.9128159-.6007441-7.806785,1.6953692-2.4549638,4.4160467-3.9943706,7.6306053-4.644214l-.9502154-3.0701489c-3.4571667.7827002-6.6052968,2.4318583-9.005385,5.9092424-3.101919,4.4969161-2.4751812,9.8574019,1.2708048,12.4423344,4.0550226,2.7986588,7.567065.8462405,11.8993542-3.1048072,3.7777561-3.4282848,6.293372-4.9619152,8.780106-3.2463287,2.1112689,1.4585373,2.8188761,4.6615431.3263658,8.2746723-2.2556785,3.2694342-5.3229393,4.7250834-8.6616901,5.3373802l.9242217,3.1048072c3.9394949-.7538183,7.4284318-2.8217643,10.0855691-6.6717253,3.7633152-5.4529079,2.6571373-10.3368419-1.0541904-12.9015571Z"/>
+          <circle cx="274.774484" cy="170.5735213" r="5.6692913"/>
+          <circle cx="12.2862951" cy="170.5735213" r="5.6692913"/>
+        </g>
+      </svg>
+      <span>Maria Teresa Creations</span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menu">
+      <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#servicos">Serviços</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap" id="top">
+
+  <section class="hero">
+    <p class="eyebrow mono">Aberto a ideias por resolver</p>
+    <h1>Resolvemos o que<br>ainda não <em>existe</em>.</h1>
+    <p class="hero-sub">A Maria Teresa Creations não é só impressão 3D. É a oficina que arranja a solução certa para cada ideia — desenho 3D, marcenaria, sublimação, DTF UV ou gravação a laser, conforme o que o problema pedir.</p>
+    <div class="hero-cta">
+      <a href="https://wa.me/351965768387" target="_blank" rel="noopener" class="btn btn-primary">Conta-me a tua ideia</a>
+      <a href="#galeria" class="btn btn-ghost">Ver o que já fizemos</a>
+    </div>
+  </section>
+
+  <section class="section" id="servicos">
+    <p class="section-label mono">Técnicas que usamos — 07</p>
+
+    <a class="work-row" href="#contacto">
+      <span class="work-index mono">01</span>
+      <span class="work-info">
+        <span class="work-title">Desenho 3D sob encomenda</span>
+        <span class="work-meta mono">Do esboço ou ideia ao ficheiro pronto</span>
+      </span>
+      <span class="work-arrow">→</span>
+    </a>
+
+    <a class="work-row" href="#contacto">
+      <span class="work-index mono">02</span>
+      <span class="work-info">
+        <span class="work-title">Impressão 3D em PLA</span>
+        <span class="work-meta mono">Ficheiro teu, nosso, ou de outra pessoa</span>
+      </span>
+      <span class="work-arrow">→</span>
+    </a>
+
+    <a class="work-row" href="#contacto">
+      <span class="work-index mono">03</span>
+      <span class="work-info">
+        <span class="work-title">Marcenaria técnica</span>
+        <span class="work-meta mono">Desenhamos e acompanhamos a execução</span>
+      </span>
+      <span class="work-arrow">→</span>
+    </a>
+
+    <a class="work-row" href="#contacto">
+      <span class="work-index mono">04</span>
+      <span class="work-info">
+        <span class="work-title">DTF UV</span>
+        <span class="work-meta mono">Impressão direta em superfícies rígidas</span>
+      </span>
+      <span class="work-arrow">→</span>
+    </a>
+
+    <a class="work-row" href="#contacto">
+      <span class="work-index mono">05</span>
+      <span class="work-info">
+        <span class="work-title">Gravação a laser</span>
+        <span class="work-meta mono">Frases, ilustrações e acabamentos finais</span>
+      </span>
+      <span class="work-arrow">→</span>
+    </a>
+
+    <a class="work-row" href="#contacto">
+      <span class="work-index mono">06</span>
+      <span class="work-info">
+        <span class="work-title">Personalização por sublimação</span>
+        <span class="work-meta mono">Cor e identidade em cada peça</span>
+      </span>
+      <span class="work-arrow">→</span>
+    </a>
+
+    <a class="work-row" href="#contacto">
+      <span class="work-index mono">07</span>
+      <span class="work-info">
+        <span class="work-title">Impressão 3D de ficheiro pronto</span>
+        <span class="work-meta mono">Já tens o ficheiro? Nós imprimimos</span>
+      </span>
+      <span class="work-arrow">→</span>
+    </a>
+  </section>
+
+  <section class="section" id="galeria">
+    <p class="section-label mono">Galeria de projetos — 08</p>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <svg class="gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="gallery-caption mono">Organizador de especiarias — foto em breve</span>
+      </div>
+      <div class="gallery-item">
+        <svg class="gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="gallery-caption mono">Porta-chaves fosforescente com NFC — foto em breve</span>
+      </div>
+      <div class="gallery-item">
+        <svg class="gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="gallery-caption mono">Posavasos gravados a laser — foto em breve</span>
+      </div>
+      <div class="gallery-item">
+        <svg class="gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="gallery-caption mono">Azulejo personalizado — foto em breve</span>
+      </div>
+      <div class="gallery-item">
+        <svg class="gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="gallery-caption mono">Brinquedo didático em madeira — foto em breve</span>
+      </div>
+      <div class="gallery-item">
+        <svg class="gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="gallery-caption mono">Luminária em acrílico — foto em breve</span>
+      </div>
+      <div class="gallery-item">
+        <svg class="gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="gallery-caption mono">Jogo de cartas tipo "would you dare" — foto em breve</span>
+      </div>
+      <div class="gallery-item">
+        <svg class="gallery-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span class="gallery-caption mono">Insert para board game — foto em breve</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sobre">
+    <p class="section-label mono">Sobre</p>
+    <div class="about-grid">
+      <p class="about-text">Não nos prendemos a uma técnica — prendemo-nos ao problema. Já desenhámos móveis para enviar a marceneiros, porta-chaves com NFC e brilho no escuro, jogos de cartas, azulejos personalizados, inserts para board games e soluções para artistas plásticos materializarem ideias. Se ainda não existe, é capaz de ser por isto que ainda não falaste connosco.</p>
+      <div>
+        <div class="skills">
+          <span class="skill-tag">Desenho 3D</span>
+          <span class="skill-tag">Marcenaria técnica</span>
+          <span class="skill-tag">DTF UV</span>
+          <span class="skill-tag">Gravação a laser</span>
+          <span class="skill-tag">Sublimação e DTF Têxtil</span>
+          <span class="skill-tag">Concretização de Ideias</span>
+          <span class="skill-tag">Peças à medida</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contacto">
+    <p class="section-label mono">Contacto</p>
+    <a href="mailto:tomariateresacreations@gmail.com" class="contact-main"><span>tomariateresacreations@gmail.com</span></a>
+
+    <div class="contact-list">
+      <a href="https://wa.me/351965768387" target="_blank" rel="noopener">
+        <span>WhatsApp</span>
+        <span class="mono">965 768 387</span>
+      </a>
+      <a href="mailto:tomariateresacreations@gmail.com">
+        <span>Email</span>
+        <span class="mono">tomariateresacreations@gmail.com</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© 2026 Maria Teresa Creations</span>
+  <span>Feito à mão, peça a peça</span>
+</footer>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  function closeMenu(){
+    navLinks.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Abrir menu');
+  }
+  function openMenu(){
+    navLinks.classList.add('is-open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    navToggle.setAttribute('aria-label', 'Fechar menu');
+  }
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.contains('is-open');
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 700) closeMenu();
+  });
+</script>
+
+</body>
+</html>
