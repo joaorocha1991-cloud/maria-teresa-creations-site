@@ -865,8 +865,12 @@
       const cardTags = (card.dataset.computedTags || '').split(' ');
       card.classList.toggle('hidden', tag !== null && !cardTags.includes(tag));
     });
-    const galeria = document.getElementById('galeria');
-    if (galeria) galeria.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    requestAnimationFrame(() => {
+      const lista = document.getElementById('projectsList');
+      if (lista && lista.getBoundingClientRect().bottom < 100) {
+        lista.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   };
 
   filterReset.addEventListener('click', () => applyFilter(null));

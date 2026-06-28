@@ -461,7 +461,7 @@ function renderImagem(pi, ii, img) {
   return `<div class="imagem-item" id="img-${pi}-${ii}" data-pi="${pi}" data-ii="${ii}">
     <div class="drag-handle" title="Arrastar para reordenar">⠿</div>
     <div class="imagem-preview" id="prev-${pi}-${ii}">
-      ${img.src ? `<img src="${img.src}" onerror="this.style.display='none'">` : '<span>sem imagem</span>'}
+      ${img.src ? `<img src="${img.src}" draggable="false" onerror="this.style.display='none'">` : '<span>sem imagem</span>'}
     </div>
     <div class="imagem-fields">
       <input type="text" placeholder="Ficheiro (ex: imagens/foto.jpg)" value="${esc(img.src)}" data-pi="${pi}" data-ii="${ii}" class="img-src" onchange="atualizarPreview(${pi},${ii},this.value)">
