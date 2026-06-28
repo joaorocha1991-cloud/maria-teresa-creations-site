@@ -183,6 +183,11 @@
     </div>
     <div class="field"><label>Email</label><input id="t-contacto-email" type="email"></div>
 
+    <div class="section-title">Tags da galeria</div>
+    <div id="tags-lista" class="skills-lista"></div>
+    <button class="btn-add-skill" onclick="addTag()" style="margin-bottom:4px;">+ Adicionar tag</button>
+    <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">O identificador (ex: <code>nova-tag</code>) não pode ter espaços nem maiúsculas. O rótulo é o nome que aparece no botão.</div>
+
     <div class="section-title">Rodapé</div>
     <div class="field-row">
       <div class="field"><label>Copyright</label><input id="t-footer-copyright" type="text"></div>
@@ -207,15 +212,7 @@
 <script>
 const REPO = 'joaorocha1991-cloud/maria-teresa-creations-site';
 const API  = `https://api.github.com/repos/${REPO}/contents/`;
-const TAG_LABELS = {
-  'impressao-3d': 'Impressão 3D',
-  'dtf-uv': 'DTF UV',
-  'laser': 'Laser',
-  'sublimacao': 'Sublimação',
-  'marcenaria': 'Marcenaria',
-  'textil': 'Têxtil',
-  'fosforescente': 'Fosforescente',
-};
+let TAG_LABELS = {};
 
 let token = '';
 let conteudo = {};
@@ -261,6 +258,7 @@ async function carregarDados() {
     githubGet('conteudo.json'),
     githubGet('projetos.json'),
   ]);
+  TAG_LABELS = conteudo.tags || {};
   preencherTextos();
   renderGaleria();
   setStatus('', '');
@@ -329,6 +327,7 @@ function preencherTextos() {
 
   // Skills
   renderSkills(c.sobre.skills);
+  renderTags();
 }
 
 function renderSkills(skills) {
@@ -337,6 +336,41 @@ function renderSkills(skills) {
       <input type="text" value="${esc(sk)}" data-skill="${i}">
       <button class="btn-rm-skill" onclick="removeSkill(${i})">✕</button>
     </div>`).join('');
+}
+
+function renderTags() {
+  const entries = Object.entries(TAG_LABELS);
+  document.getElementById('tags-lista').innerHTML = entries.map(([k, v], i) => `
+    <div class="skill-row">
+      <input type="text" placeholder="identificador" value="${esc(k)}" data-tag-key="${i}" style="font-family:monospace;flex:0.8;">
+      <input type="text" placeholder="rótulo (nome do botão)" value="${esc(v)}" data-tag-val="${i}">
+      <button class="btn-rm-skill" onclick="removeTag(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addTag() {
+  TAG_LABELS['nova-tag-' + Date.now()] = 'Nova Tag';
+  renderTags();
+  renderGaleria();
+}
+
+function removeTag(i) {
+  const keys = Object.keys(TAG_LABELS);
+  delete TAG_LABELS[keys[i]];
+  renderTags();
+  renderGaleria();
+}
+
+function lerTags() {
+  const keys = [...document.querySelectorAll('[data-tag-key]')];
+  const vals = [...document.querySelectorAll('[data-tag-val]')];
+  TAG_LABELS = {};
+  keys.forEach((kEl, i) => {
+    const k = kEl.value.trim().toLowerCase().replace(/\s+/g, '-');
+    const v = vals[i].value.trim();
+    if (k && v) TAG_LABELS[k] = v;
+  });
+  conteudo.tags = TAG_LABELS;
 }
 
 function addSkill() {
@@ -378,6 +412,7 @@ function lerTextos() {
   conteudo.contacto.email = get('t-contacto-email');
   conteudo.footer.copyright = get('t-footer-copyright');
   conteudo.footer.tagline = get('t-footer-tagline');
+  lerTags();
 }
 
 // ── GALERIA ───────────────────────────────────────────

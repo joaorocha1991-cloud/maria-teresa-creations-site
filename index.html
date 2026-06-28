@@ -833,17 +833,18 @@
     s('contacto-whatsapp-texto', c.contacto.telefone);
     s('footer-copyright', c.footer.copyright);
     s('footer-tagline', c.footer.tagline);
+    if (c.tags) tagLabels = c.tags;
   }).catch(() => {});
 
   // FILTROS DA GALERIA
-  const tagLabels = {
+  let tagLabels = {
     'impressao-3d': 'Impressão 3D',
     'dtf-uv':       'DTF UV',
     'laser':        'Laser',
     'sublimacao':   'Sublimação',
     'marcenaria':   'Marcenaria',
     'textil':       'Têxtil',
-	'fosforescente': 'Fosforescente (Brilha no Escuro)',
+    'fosforescente': 'Fosforescente (Brilha no Escuro)',
   };
 
   const filterReset = document.getElementById('filterReset');

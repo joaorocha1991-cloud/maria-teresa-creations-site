@@ -1,4 +1,13 @@
 {
+  "tags": {
+    "impressao-3d": "Impressão 3D",
+    "dtf-uv": "DTF UV",
+    "laser": "Laser",
+    "sublimacao": "Sublimação",
+    "marcenaria": "Marcenaria",
+    "textil": "Têxtil",
+    "fosforescente": "Fosforescente (Brilha no Escuro)"
+  },
   "hero": {
     "eyebrow": "Aberto a ideias por resolver",
     "titulo": "Resolvemos o que ainda não <em>existe</em><em>.</em>",
