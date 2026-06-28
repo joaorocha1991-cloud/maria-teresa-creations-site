@@ -490,16 +490,19 @@ function moverProjeto(pi, dir) {
 
 function removeProjeto(pi) {
   if (!confirm('Remover este projeto?')) return;
+  lerGaleria();
   projetos.splice(pi, 1);
   renderGaleria();
 }
 
 function addImagem(pi) {
+  lerGaleria();
   projetos[pi].imagens.push({ src: '', alt: '', tags: [] });
   renderGaleria();
 }
 
 function removeImagem(pi, ii) {
+  lerGaleria();
   projetos[pi].imagens.splice(ii, 1);
   renderGaleria();
 }
