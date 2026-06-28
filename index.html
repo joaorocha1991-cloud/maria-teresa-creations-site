@@ -881,10 +881,14 @@
           .filter(p => p.imagens.length > 0);
 
     const scrollY = window.scrollY;
+    document.body.style.minHeight = document.body.scrollHeight + 'px';
     document.getElementById('projectsList').innerHTML = filtered.map(buildCard).join('');
     initGaleria();
     window.scrollTo({ top: scrollY, behavior: 'instant' });
-    requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: 'instant' }));
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: scrollY, behavior: 'instant' });
+      document.body.style.minHeight = '';
+    });
 
     // marcar botão ativo e adicionar × para deselecionar
     document.querySelectorAll('.filter-btn').forEach(b => {
