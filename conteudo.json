@@ -10,7 +10,7 @@
   },
   "hero": {
     "eyebrow": "Aberto a ideias por resolver",
-    "titulo": "Resolvemos o que ainda não <em>existe</em><em>.</em>",
+    "titulo": "o que ainda não <em>existe</em><em>.</em>",
     "subtitulo": "A Maria Teresa Creations não é só impressão 3D. É a oficina que arranja a solução certa para cada ideia — desenho 3D, marcenaria, sublimação, DTF UV ou gravação a laser, conforme o que o problema pedir.",
     "cta_primario": "Conta-me a tua ideia",
     "cta_primario_link": "https://wa.me/351965768387",
@@ -19,15 +19,42 @@
   "servicos": {
     "label": "Técnicas que usamos",
     "lista": [
-      { "titulo": "Desenho 3D sob encomenda",       "descricao": "Do esboço ou ideia ao ficheiro pronto" },
-      { "titulo": "Impressão 3D em PLA",             "descricao": "Ficheiro teu, nosso, ou de outra pessoa" },
-      { "titulo": "Marcenaria técnica",              "descricao": "Desenhamos e acompanhamos a execução" },
-      { "titulo": "DTF UV",                          "descricao": "Impressão direta em superfícies rígidas" },
-      { "titulo": "Gravação a laser",                "descricao": "Frases, ilustrações e acabamentos finais" },
-      { "titulo": "Sublimação",                      "descricao": "Cerâmica, MDF, metal, têxtil e muito mais" },
-      { "titulo": "Personalização têxtil",           "descricao": "DTF, Sublimação e Flex" },
-      { "titulo": "Design criativo",                 "descricao": "Criação, edição e manipulação de imagem para qualquer suporte" },
-      { "titulo": "Impressão 3D de ficheiro pronto", "descricao": "Já tens o ficheiro? Nós imprimimos" }
+      {
+        "titulo": "Desenho 3D sob encomenda",
+        "descricao": "Do esboço ou ideia ao ficheiro pronto"
+      },
+      {
+        "titulo": "Impressão 3D em PLA",
+        "descricao": "Ficheiro teu, nosso, ou de outra pessoa"
+      },
+      {
+        "titulo": "Marcenaria técnica",
+        "descricao": "Desenhamos e acompanhamos a execução"
+      },
+      {
+        "titulo": "DTF UV",
+        "descricao": "Impressão direta em superfícies rígidas"
+      },
+      {
+        "titulo": "Gravação a laser",
+        "descricao": "Frases, ilustrações e acabamentos finais"
+      },
+      {
+        "titulo": "Sublimação",
+        "descricao": "Cerâmica, MDF, metal, têxtil e muito mais"
+      },
+      {
+        "titulo": "Personalização têxtil",
+        "descricao": "DTF, Sublimação e Flex"
+      },
+      {
+        "titulo": "Design criativo",
+        "descricao": "Criação, edição e manipulação de imagem para qualquer suporte"
+      },
+      {
+        "titulo": "Impressão 3D de ficheiro pronto",
+        "descricao": "Já tens o ficheiro? Nós imprimimos"
+      }
     ]
   },
   "galeria": {
@@ -38,7 +65,15 @@
   "sobre": {
     "label": "Sobre",
     "texto": "Não nos prendemos a uma técnica — prendemo-nos ao problema. Já desenhámos móveis para enviar a marceneiros, porta-chaves com NFC e brilho no escuro, jogos de cartas, azulejos personalizados, inserts para board games e soluções para artistas plásticos materializarem ideias. Se ainda não existe, é capaz de ser por isto que ainda não falaste connosco.",
-    "skills": ["Desenho 3D", "Marcenaria técnica", "DTF UV", "Gravação a laser", "Sublimação e DTF Têxtil", "Concretização de Ideias", "Peças à medida"]
+    "skills": [
+      "Desenho 3D",
+      "Marcenaria técnica",
+      "DTF UV",
+      "Gravação a laser",
+      "Sublimação e DTF Têxtil",
+      "Concretização de Ideias",
+      "Peças à medida"
+    ]
   },
   "contacto": {
     "label": "Contacto",
