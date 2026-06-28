@@ -272,7 +272,7 @@ async function githubGet(path) {
 }
 
 async function githubGetSHA(path) {
-  const r = await fetch(API + path, { headers: auth(token) });
+  const r = await fetch(API + path + '?t=' + Date.now(), { headers: auth(token) });
   const data = await r.json();
   return data.sha;
 }
