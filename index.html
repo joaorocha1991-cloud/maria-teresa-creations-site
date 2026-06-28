@@ -838,6 +838,7 @@
     fetch('projetos.json?t=' + Date.now())
       .then(r => r.json())
       .then(projetos => {
+        todosOsProjetos = projetos;
         document.getElementById('projectsList').innerHTML = projetos.map(buildCard).join('');
         initGaleria();
       });
@@ -854,23 +855,26 @@
     'fosforescente': 'Fosforescente (Brilha no Escuro)',
   };
 
+  let todosOsProjetos = [];
+
   const filterReset = document.getElementById('filterReset');
   let activeTag = null;
 
   const applyFilter = (tag) => {
     activeTag = tag;
     filterReset.classList.toggle('visible', tag !== null);
+
+    const filtered = tag === null
+      ? todosOsProjetos
+      : todosOsProjetos
+          .map(p => ({ ...p, imagens: p.imagens.filter(img => img.tags.includes(tag)) }))
+          .filter(p => p.imagens.length > 0);
+
+    document.getElementById('projectsList').innerHTML = filtered.map(buildCard).join('');
+    initGaleria();
+
+    // marcar botão ativo (recriados pelo initGaleria)
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
-    document.querySelectorAll('.project-card').forEach(card => {
-      const cardTags = (card.dataset.computedTags || '').split(' ');
-      card.classList.toggle('hidden', tag !== null && !cardTags.includes(tag));
-    });
-    requestAnimationFrame(() => {
-      const lista = document.getElementById('projectsList');
-      if (lista && lista.getBoundingClientRect().bottom < 100) {
-        lista.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
   };
 
   filterReset.addEventListener('click', () => applyFilter(null));
