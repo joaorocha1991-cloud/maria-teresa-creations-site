@@ -422,7 +422,11 @@ function renderGaleria() {
     <div class="projeto-item" id="proj-${pi}">
       <div class="projeto-header">
         <div class="field"><label>Nome do projeto</label><input type="text" value="${esc(p.nome)}" data-pi="${pi}" class="proj-nome"></div>
-        <button class="btn-remover-projeto" onclick="removeProjeto(${pi})">Remover projeto</button>
+        <div class="img-ordem">
+        <button class="btn-ordem" onclick="moverProjeto(${pi},-1)" ${pi === 0 ? 'disabled' : ''} title="Mover para cima">▲</button>
+        <button class="btn-ordem" onclick="moverProjeto(${pi},1)" title="Mover para baixo">▼</button>
+      </div>
+      <button class="btn-remover-projeto" onclick="removeProjeto(${pi})">Remover projeto</button>
       </div>
       <div class="imagens-lista" id="imgs-${pi}">
         ${p.imagens.map((img, ii) => renderImagem(pi, ii, img)).join('')}
@@ -467,6 +471,14 @@ function atualizarPreview(pi, ii, src) {
 
 function addProjeto() {
   projetos.push({ nome: 'Novo Projeto', imagens: [] });
+  renderGaleria();
+}
+
+function moverProjeto(pi, dir) {
+  lerGaleria();
+  const novo = pi + dir;
+  if (novo < 0 || novo >= projetos.length) return;
+  [projetos[pi], projetos[novo]] = [projetos[novo], projetos[pi]];
   renderGaleria();
 }
 
