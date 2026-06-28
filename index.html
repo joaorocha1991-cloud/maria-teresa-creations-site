@@ -874,6 +874,7 @@
     document.getElementById('projectsList').innerHTML = filtered.map(buildCard).join('');
     initGaleria();
     window.scrollTo({ top: scrollY, behavior: 'instant' });
+    requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: 'instant' }));
 
     // marcar botão ativo (recriados pelo initGaleria)
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
