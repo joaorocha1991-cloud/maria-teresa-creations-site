@@ -2,29 +2,115 @@
   {
     "nome": "Pokedex + Tokens",
     "imagens": [
-      { "src": "imagens/pokedex-1.jpg", "alt": "Pokedex interior", "tags": ["impressao-3d"] },
-      { "src": "imagens/pokedex-2.jpg", "alt": "Pokedex vazio",    "tags": ["impressao-3d"] },
-      { "src": "imagens/pokedex-3.jpg", "alt": "Pokedex pormenor", "tags": ["impressao-3d"] }
+      {
+        "src": "imagens/pokedex-1.jpg",
+        "alt": "Pokedex interior",
+        "tags": [
+          "impressao-3d"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-2.jpg",
+        "alt": "Pokedex vazio",
+        "tags": [
+          "impressao-3d"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-3.jpg",
+        "alt": "Pokedex pormenor",
+        "tags": [
+          "impressao-3d"
+        ]
+      }
     ]
   },
   {
     "nome": "Porta-chaves com NFC",
     "imagens": [
-      { "src": "imagens/lightset-1.jpeg", "alt": "Porta-chaves NFC",           "tags": ["impressao-3d", "dtf-uv", "fosforescente"] },
-      { "src": "imagens/lightset-2.jpeg", "alt": "Porta-chaves fluorescente",  "tags": ["impressao-3d", "dtf-uv", "fosforescente"] },
-      { "src": "imagens/lightset-3.jpeg", "alt": "Porta-chaves NFC detalhe",   "tags": ["impressao-3d", "dtf-uv", "fosforescente"] },
-      { "src": "imagens/lightset-4.jpeg", "alt": "Porta-chaves conjunto",      "tags": ["impressao-3d", "dtf-uv", "fosforescente"] }
+      {
+        "src": "imagens/lightset-1.jpeg",
+        "alt": "Porta-chaves NFC",
+        "tags": [
+          "impressao-3d",
+          "dtf-uv",
+          "fosforescente"
+        ]
+      },
+      {
+        "src": "imagens/lightset-2.jpeg",
+        "alt": "Porta-chaves fluorescente",
+        "tags": [
+          "impressao-3d",
+          "dtf-uv",
+          "fosforescente"
+        ]
+      },
+      {
+        "src": "imagens/lightset-3.jpeg",
+        "alt": "Porta-chaves NFC detalhe",
+        "tags": [
+          "impressao-3d",
+          "dtf-uv",
+          "fosforescente"
+        ]
+      },
+      {
+        "src": "imagens/lightset-4.jpeg",
+        "alt": "Porta-chaves conjunto",
+        "tags": [
+          "impressao-3d",
+          "dtf-uv",
+          "fosforescente"
+        ]
+      }
     ]
   },
   {
     "nome": "Outros Projetos",
     "imagens": [
-      { "src": "imagens/pokedex-1.jpg", "alt": "Projeto laser",      "tags": ["laser"] },
-      { "src": "imagens/pokedex-2.jpg", "alt": "Projeto sublimação", "tags": ["sublimacao"] },
-      { "src": "imagens/pokedex-3.jpg", "alt": "Projeto marcenaria", "tags": ["marcenaria"] },
-      { "src": "imagens/pokedex-1.jpg", "alt": "Projeto têxtil",     "tags": ["textil"] },
-      { "src": "imagens/pokedex-2.jpg", "alt": "Projeto DTF UV",     "tags": ["dtf-uv"] },
-      { "src": "imagens/pokedex-3.jpg", "alt": "Projeto impressão",  "tags": ["impressao-3d"] }
+      {
+        "src": "imagens/pokedex-1.jpg",
+        "alt": "Projeto laser",
+        "tags": [
+          "laser"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-2.jpg",
+        "alt": "Projeto sublimação",
+        "tags": [
+          "sublimacao"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-3.jpg",
+        "alt": "Projeto marcenaria",
+        "tags": [
+          "marcenaria"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-1.jpg",
+        "alt": "Projeto têxtil",
+        "tags": [
+          "textil"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-2.jpg",
+        "alt": "Projeto DTF UV",
+        "tags": [
+          "dtf-uv"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-3.jpg",
+        "alt": "Projeto impressão",
+        "tags": [
+          "impressao-3d"
+        ]
+      }
     ]
   }
 ]
