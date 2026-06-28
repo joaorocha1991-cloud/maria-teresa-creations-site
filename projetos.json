@@ -70,46 +70,100 @@
     "nome": "Outros Projetos",
     "imagens": [
       {
-        "src": "imagens/pokedex-1.jpg",
+        "src": "imagens/board-game-insert-1.jpg",
         "alt": "Projeto laser",
         "tags": [
-          "laser"
+          "impressao-3d"
         ]
       },
       {
-        "src": "imagens/pokedex-2.jpg",
+        "src": "imagens/board-game-insert-2.jpg",
         "alt": "Projeto sublimação",
         "tags": [
-          "sublimacao"
+          "impressao-3d"
         ]
       },
       {
-        "src": "imagens/pokedex-3.jpg",
+        "src": "imagens/board-game-insert-3.jpg",
         "alt": "Projeto marcenaria",
         "tags": [
-          "marcenaria"
+          "impressao-3d"
         ]
       },
       {
-        "src": "imagens/pokedex-1.jpg",
+        "src": "imagens/board-game-insert-4.jpg",
         "alt": "Projeto têxtil",
         "tags": [
-          "textil"
+          "impressao-3d"
         ]
       },
       {
-        "src": "imagens/pokedex-2.jpg",
+        "src": "imagens/board-game-insert-5.jpg",
         "alt": "Projeto DTF UV",
         "tags": [
-          "dtf-uv"
+          "impressao-3d"
         ]
       },
       {
-        "src": "imagens/pokedex-3.jpg",
+        "src": "imagens/board-game-insert-6.jpg",
         "alt": "Projeto impressão",
         "tags": [
           "impressao-3d"
         ]
+      },
+      {
+        "src": "imagens/board-game-insert-7.jpg",
+        "alt": "",
+        "tags": [
+          "impressao-3d"
+        ]
+      },
+      {
+        "src": "imagens/board-game-insert-8.jpg",
+        "alt": "",
+        "tags": []
+      },
+      {
+        "src": "imagens/board-game-insert-9.jpg",
+        "alt": "",
+        "tags": []
+      },
+      {
+        "src": "imagens/board-game-insert-10.jpg",
+        "alt": "",
+        "tags": [
+          "impressao-3d"
+        ]
+      },
+      {
+        "src": "imagens/board-game-insert-11.jpg",
+        "alt": "",
+        "tags": []
+      },
+      {
+        "src": "imagens/bookreview.jpg",
+        "alt": "",
+        "tags": []
+      },
+      {
+        "src": "imagens/love-cupons.jpg",
+        "alt": "",
+        "tags": []
+      },
+      {
+        "src": "imagens/luminarias-2.jpg",
+        "alt": "",
+        "tags": []
+      },
+      {
+        "src": "imagens/luminarias-1.jpg",
+        "alt": "",
+        "tags": []
+      },
+      {
+        "src": "imagens/wouldyourather.jpg",
+        "alt": "",
+        "tags": []
       }
     ]
   }
