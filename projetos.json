@@ -13,7 +13,8 @@
         "src": "imagens/pokedex-2.jpg",
         "alt": "Pokedex vazio",
         "tags": [
-          "impressao-3d"
+          "impressao-3d",
+          "dtf-uv"
         ]
       },
       {
@@ -33,8 +34,7 @@
         "alt": "Porta-chaves NFC",
         "tags": [
           "impressao-3d",
-          "dtf-uv",
-          "fosforescente"
+          "dtf-uv"
         ]
       },
       {
@@ -70,6 +70,28 @@
     "nome": "Outros Projetos",
     "imagens": [
       {
+        "src": "imagens/luminarias-2.jpg",
+        "alt": "Luminária Criança",
+        "tags": [
+          "luminarias"
+        ]
+      },
+      {
+        "src": "imagens/luminarias-1.jpg",
+        "alt": "",
+        "tags": [
+          "luminarias"
+        ]
+      },
+      {
+        "src": "imagens/board-game-insert-7.jpg",
+        "alt": "",
+        "tags": [
+          "impressao-3d",
+          "board-game"
+        ]
+      },
+      {
         "src": "imagens/board-game-insert-3.jpg",
         "alt": "Projeto marcenaria",
         "tags": [
@@ -96,14 +118,6 @@
       {
         "src": "imagens/board-game-insert-6.jpg",
         "alt": "Projeto impressão",
-        "tags": [
-          "impressao-3d",
-          "board-game"
-        ]
-      },
-      {
-        "src": "imagens/board-game-insert-7.jpg",
-        "alt": "",
         "tags": [
           "impressao-3d",
           "board-game"
@@ -152,31 +166,23 @@
       {
         "src": "imagens/bookreview.jpg",
         "alt": "Bookmarks Book Review",
-        "tags": []
+        "tags": [
+          "imprimives"
+        ]
       },
       {
         "src": "imagens/love-cupons.jpg",
         "alt": "Love cupons",
-        "tags": []
-      },
-      {
-        "src": "imagens/luminarias-2.jpg",
-        "alt": "Luminária Criança",
         "tags": [
-          "luminarias"
-        ]
-      },
-      {
-        "src": "imagens/luminarias-1.jpg",
-        "alt": "",
-        "tags": [
-          "luminarias"
+          "imprimives"
         ]
       },
       {
         "src": "imagens/wouldyourather.jpg",
         "alt": "Card Game Would you rather",
-        "tags": []
+        "tags": [
+          "imprimives"
+        ]
       }
     ]
   }
