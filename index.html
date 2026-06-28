@@ -216,7 +216,7 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    opacity: 0.045;
+    opacity: 0.12;
     background-image:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 200px 200px;
@@ -566,9 +566,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
     padding: 18px 0;
     border-bottom: 1px solid var(--line);
     transition: color 0.2s;
+  }
+  .contact-list a span:last-child{
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .contact-list a span:first-child{
+    flex-shrink: 0;
   }
   .contact-list a:first-child{ border-top: 1px solid var(--line); }
   .contact-list a:hover{ color: var(--accent); }
