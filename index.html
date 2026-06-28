@@ -733,93 +733,7 @@
 
     <button class="filter-reset" id="filterReset">← Ver todos os projetos</button>
 
-    <div id="projectsList" role="list" aria-label="Galeria de projetos">
-
-        <!-- PROJETO 1 -->
-        <div class="project-card">
-          <div class="project-imgs">
-            <div class="project-imgs-track">
-             <div class="project-img" data-tags="impressao-3d">
-				<img src="imagens/pokedex-1.jpg" alt="pokedex interior">
-				</div>
-				<div class="project-img" data-tags="impressao-3d">
-				<img src="imagens/pokedex-2.jpg" alt="pokedex vazio">
-				</div>
-				<div class="project-img" data-tags="impressao-3d">
-				<img src="imagens/pokedex-3.jpg" alt="pokedex pormenor">
-				</div>
-            </div>
-          </div>
-          <div class="project-footer">
-            <div>
-              <div class="project-name">Pokedex + Tokens</div>
-              <div class="project-tags"></div>
-            </div>
-            <div class="img-dots"></div>
-          </div>
-        </div>
-
-        <!-- PROJETO 2 -->
-        <div class="project-card">
-          <div class="project-imgs">
-            <div class="project-imgs-track">
-             <div class="project-img" data-tags="impressao-3d dtf-uv fosforescente">
-				<img src="imagens/lightset-1.jpeg" alt="porta-chaves-NFC">
-				</div>
-				<div class="project-img" data-tags="impressao-3d dtf-uv fosforescente">
-				<img src="imagens/lightset-2.jpeg" alt="porta-chaves-fluorescente">
-				</div>
-				<div class="project-img" data-tags="impressao-3d dtf-uv fosforescente">
-				<img src="imagens/lightset-3.jpeg" alt="porta-chaves-NFC">
-				</div>
-				<div class="project-img" data-tags="impressao-3d dtf-uv fosforescente">
-				<img src="imagens/lightset-4.jpeg" alt="porta-chaves-NFC">
-				</div>
-            </div>
-          </div>
-          <div class="project-footer">
-            <div>
-              <div class="project-name">Porta-chaves com NFC</div>
-              <div class="project-tags"></div>
-            </div>
-            <div class="img-dots"></div>
-          </div>
-        </div>
-
-        <!-- PROJETO 3 -->
-        <div class="project-card">
-          <div class="project-imgs">
-            <div class="project-imgs-track">
-             <div class="project-img" data-tags="laser">
-				<img src="imagens/pokedex-1.jpg" alt="pokedex interior">
-				</div>
-				<div class="project-img" data-tags="sublimacao">
-				<img src="imagens/pokedex-2.jpg" alt="pokedex vazio">
-				</div>
-				<div class="project-img" data-tags="marcenaria">
-				<img src="imagens/pokedex-3.jpg" alt="pokedex pormenor">
-				</div>
-				<div class="project-img" data-tags="textil">
-				<img src="imagens/pokedex-1.jpg" alt="pokedex interior">
-				</div>
-				<div class="project-img" data-tags="dtf-uv">
-				<img src="imagens/pokedex-2.jpg" alt="pokedex vazio">
-				</div>
-				<div class="project-img" data-tags="impressao-3d">
-				<img src="imagens/pokedex-3.jpg" alt="pokedex pormenor">
-				</div>
-            </div>
-          </div>
-          <div class="project-footer">
-            <div>
-              <div class="project-name">Outros Projetos</div>
-              <div class="project-tags"></div>
-            </div>
-            <div class="img-dots"></div>
-          </div>
-        </div>
-
-    </div>
+    <div id="projectsList" role="list" aria-label="Galeria de projetos"></div>
 
     <div class="reveal" style="margin-top: clamp(40px,6vw,64px); text-align:center;">
       <a href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Quero algo assim</a>
@@ -932,7 +846,30 @@
     }
   });
 
-  // GALERIA — swipe de imagens por projeto com loop infinito
+  // GALERIA — carregar projetos do JSON e inicializar
+  function buildCard(projeto) {
+    const imgs = projeto.imagens.map(img =>
+      `<div class="project-img" data-tags="${img.tags.join(' ')}">
+        <img src="${img.src}" alt="${img.alt}" loading="lazy">
+      </div>`
+    ).join('');
+    return `<div class="project-card">
+      <div class="project-imgs"><div class="project-imgs-track">${imgs}</div></div>
+      <div class="project-footer">
+        <div><div class="project-name">${projeto.nome}</div><div class="project-tags"></div></div>
+        <div class="img-dots"></div>
+      </div>
+    </div>`;
+  }
+
+  fetch('projetos.json')
+    .then(r => r.json())
+    .then(projetos => {
+      document.getElementById('projectsList').innerHTML = projetos.map(buildCard).join('');
+      initGaleria();
+    });
+
+  function initGaleria() {
   document.querySelectorAll('.project-card').forEach(card => {
     const container = card.querySelector('.project-imgs');
     const track     = card.querySelector('.project-imgs-track');
@@ -1006,6 +943,7 @@
     window.addEventListener('mousemove', e => { if (down) container.scrollLeft = ss - (e.pageX - sx); });
     window.addEventListener('mouseup', () => { down = false; container.style.cursor = ''; });
   });
+  } // fim initGaleria
 </script>
 
 </body>
