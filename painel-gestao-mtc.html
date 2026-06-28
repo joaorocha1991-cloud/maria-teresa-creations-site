@@ -62,7 +62,7 @@
   .btn-remover-projeto:hover{ border-color: var(--red); color: var(--red); }
 
   .imagens-lista{ display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-  .imagem-item{ display: grid; grid-template-columns: 72px 1fr auto; gap: 10px; align-items: start; background: var(--bg-alt); border-radius: 8px; padding: 10px; }
+  .imagem-item{ display: grid; grid-template-columns: 72px 1fr auto auto; gap: 10px; align-items: start; background: var(--bg-alt); border-radius: 8px; padding: 10px; }
   .imagem-preview{ width: 72px; height: 72px; object-fit: cover; border-radius: 6px; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--muted); overflow: hidden; }
   .imagem-preview img{ width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
   .imagem-fields{ display: flex; flex-direction: column; gap: 6px; }
@@ -74,6 +74,10 @@
   .tags-check input{ display: none; }
   .btn-remover-img{ background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 4px; line-height: 1; }
   .btn-remover-img:hover{ color: var(--red); }
+  .img-ordem{ display: flex; flex-direction: column; gap: 2px; }
+  .btn-ordem{ background: none; border: 1px solid var(--line); color: var(--muted); cursor: pointer; font-size: 0.75rem; padding: 3px 6px; border-radius: 4px; line-height: 1; }
+  .btn-ordem:hover{ border-color: var(--accent); color: var(--accent); }
+  .btn-ordem:disabled{ opacity: 0.3; cursor: default; }
 
   .btn-add-img{ font-size: 0.8rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 7px; padding: 8px 14px; cursor: pointer; width: 100%; margin-bottom: 4px; }
   .btn-add-img:hover{ background: #f0f9f4; }
@@ -412,6 +416,10 @@ function renderImagem(pi, ii, img) {
         <span style="color:var(--accent);text-decoration:underline;" onclick="this.previousElementSibling.click()">📎 Fazer upload de imagem</span>
       </label>
     </div>
+    <div class="img-ordem">
+      <button class="btn-ordem" onclick="moverImagem(${pi},${ii},-1)" ${ii === 0 ? 'disabled' : ''} title="Mover para cima">▲</button>
+      <button class="btn-ordem" onclick="moverImagem(${pi},${ii},1)" title="Mover para baixo">▼</button>
+    </div>
     <button class="btn-remover-img" onclick="removeImagem(${pi},${ii})" title="Remover imagem">✕</button>
   </div>`;
 }
@@ -439,6 +447,15 @@ function addImagem(pi) {
 
 function removeImagem(pi, ii) {
   projetos[pi].imagens.splice(ii, 1);
+  renderGaleria();
+}
+
+function moverImagem(pi, ii, dir) {
+  lerGaleria();
+  const imgs = projetos[pi].imagens;
+  const novo = ii + dir;
+  if (novo < 0 || novo >= imgs.length) return;
+  [imgs[ii], imgs[novo]] = [imgs[novo], imgs[ii]];
   renderGaleria();
 }
 
