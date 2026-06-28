@@ -214,7 +214,9 @@
   .hero::before{
     content: '';
     position: absolute;
-    inset: 0;
+    top: 0; bottom: 0;
+    left: calc(-1 * clamp(32px, 9vw, 120px));
+    right: calc(-1 * clamp(32px, 9vw, 120px));
     z-index: 0;
     opacity: 0.12;
     background-image:
