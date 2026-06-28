@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel MTC</title>
+<style>
+  *{ box-sizing: border-box; margin: 0; padding: 0; }
+  :root{
+    --accent: #165C38; --accent-h: #1F7A4A; --bg: #FAFAF8; --bg-alt: #F3F5F2;
+    --ink: #1E293B; --muted: #64748B; --line: #E2E8F0; --white: #fff;
+    --red: #DC2626;
+  }
+  body{ font-family: system-ui, sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; }
+
+  /* LOGIN */
+  #login{ display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; }
+  .login-box{ background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 40px; max-width: 420px; width: 100%; }
+  .login-box h1{ font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+  .login-box p{ color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; line-height: 1.5; }
+  .login-box a{ color: var(--accent); }
+
+  /* PAINEL */
+  #painel{ display:none; min-height:100vh; }
+  .painel-header{ background: var(--white); border-bottom: 1px solid var(--line); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 10; }
+  .painel-header h1{ font-size: 0.95rem; font-weight: 700; }
+  .painel-header small{ color: var(--muted); font-size: 0.75rem; }
+  .btn-sair{ font-size: 0.78rem; color: var(--muted); background: none; border: none; cursor: pointer; padding: 6px 10px; border-radius: 6px; }
+  .btn-sair:hover{ background: var(--bg-alt); }
+
+  /* TABS */
+  .tabs{ display: flex; gap: 0; border-bottom: 1px solid var(--line); background: var(--white); padding: 0 24px; }
+  .tab{ padding: 12px 16px; font-size: 0.85rem; font-weight: 500; color: var(--muted); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .tab.active{ color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* CONTENT */
+  .tab-content{ display: none; padding: 32px 24px; max-width: 820px; margin: 0 auto; }
+  .tab-content.active{ display: block; }
+
+  /* FORM */
+  .section-title{ font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 28px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .section-title:first-child{ margin-top: 0; }
+  .field{ margin-bottom: 14px; }
+  .field label{ display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+  .field input, .field textarea{ width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 7px; font-size: 0.87rem; font-family: inherit; background: var(--white); color: var(--ink); transition: border-color 0.15s; }
+  .field input:focus, .field textarea:focus{ outline: none; border-color: var(--accent); }
+  .field textarea{ resize: vertical; min-height: 80px; }
+  .field-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* SERVICES */
+  .service-item{ background: var(--bg-alt); border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+  .service-item .field{ margin-bottom: 8px; }
+  .service-item .field:last-child{ margin-bottom: 0; }
+  .service-num{ font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+
+  /* GALERIA */
+  .projeto-item{ border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-bottom: 16px; background: var(--white); }
+  .projeto-header{ display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .projeto-header .field{ flex: 1; margin: 0; }
+  .btn-remover-projeto{ background: none; border: 1px solid var(--line); color: var(--muted); padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; white-space: nowrap; }
+  .btn-remover-projeto:hover{ border-color: var(--red); color: var(--red); }
+
+  .imagens-lista{ display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .imagem-item{ display: grid; grid-template-columns: 72px 1fr auto; gap: 10px; align-items: start; background: var(--bg-alt); border-radius: 8px; padding: 10px; }
+  .imagem-preview{ width: 72px; height: 72px; object-fit: cover; border-radius: 6px; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--muted); overflow: hidden; }
+  .imagem-preview img{ width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+  .imagem-fields{ display: flex; flex-direction: column; gap: 6px; }
+  .imagem-fields input{ width: 100%; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.82rem; font-family: inherit; background: var(--white); }
+  .imagem-fields input:focus{ outline: none; border-color: var(--accent); }
+  .tags-check{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+  .tags-check label{ display: flex; align-items: center; gap: 4px; font-size: 0.75rem; cursor: pointer; padding: 3px 8px; border-radius: 100px; border: 1px solid var(--line); background: var(--white); }
+  .tags-check label:has(input:checked){ background: var(--accent); border-color: var(--accent); color: var(--white); }
+  .tags-check input{ display: none; }
+  .btn-remover-img{ background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 4px; line-height: 1; }
+  .btn-remover-img:hover{ color: var(--red); }
+
+  .btn-add-img{ font-size: 0.8rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 7px; padding: 8px 14px; cursor: pointer; width: 100%; margin-bottom: 4px; }
+  .btn-add-img:hover{ background: #f0f9f4; }
+  .upload-hint{ font-size: 0.72rem; color: var(--muted); text-align: center; }
+
+  .btn-add-projeto{ font-size: 0.85rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 8px; padding: 12px; cursor: pointer; width: 100%; margin-top: 8px; }
+  .btn-add-projeto:hover{ background: #f0f9f4; }
+
+  /* SAVE BAR */
+  .save-bar{ position: sticky; bottom: 0; background: var(--white); border-top: 1px solid var(--line); padding: 14px 24px; display: flex; align-items: center; gap: 14px; }
+  .btn-save{ background: var(--accent); color: var(--white); border: none; border-radius: 8px; padding: 10px 24px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+  .btn-save:hover{ background: var(--accent-h); }
+  .btn-save:disabled{ opacity: 0.6; cursor: not-allowed; }
+  #status{ font-size: 0.82rem; color: var(--muted); }
+  #status.ok{ color: var(--accent); }
+  #status.erro{ color: var(--red); }
+
+  /* SKILLS */
+  .skills-lista{ display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+  .skill-row{ display: flex; gap: 8px; align-items: center; }
+  .skill-row input{ flex: 1; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
+  .skill-row input:focus{ outline: none; border-color: var(--accent); }
+  .btn-rm-skill{ background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 4px; }
+  .btn-rm-skill:hover{ color: var(--red); }
+  .btn-add-skill{ font-size: 0.8rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+
+  /* INPUT TOKEN */
+  .token-field{ display: flex; gap: 8px; }
+  .token-field input{ flex: 1; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 0.9rem; font-family: monospace; }
+  .token-field input:focus{ outline: none; border-color: var(--accent); }
+  .btn-entrar{ background: var(--accent); color: var(--white); border: none; border-radius: 8px; padding: 10px 20px; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+  .btn-entrar:hover{ background: var(--accent-h); }
+  #login-erro{ color: var(--red); font-size: 0.82rem; margin-top: 10px; display: none; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-box">
+    <h1>Painel de Gestão MTC</h1>
+    <p>Introduz o teu <a href="https://github.com/settings/tokens/new?scopes=repo&description=MTC+Painel" target="_blank">GitHub Personal Access Token</a> com permissão <strong>repo</strong>.</p>
+    <div class="token-field">
+      <input type="password" id="tokenInput" placeholder="ghp_..." autocomplete="off">
+      <button class="btn-entrar" onclick="entrar()">Entrar</button>
+    </div>
+    <div id="login-erro">Token inválido ou sem permissões. Tenta novamente.</div>
+  </div>
+</div>
+
+<!-- PAINEL -->
+<div id="painel">
+  <div class="painel-header">
+    <div><h1>Painel MTC</h1></div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <small id="repo-label"></small>
+      <button class="btn-sair" onclick="sair()">Sair</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="mudarTab('textos', this)">Textos do site</button>
+    <button class="tab" onclick="mudarTab('galeria', this)">Galeria</button>
+  </div>
+
+  <!-- TAB: TEXTOS -->
+  <div id="tab-textos" class="tab-content active">
+
+    <div class="section-title">Hero</div>
+    <div class="field"><label>Texto pequeno (eyebrow)</label><input id="t-hero-eyebrow" type="text"></div>
+    <div class="field"><label>Título principal (pode usar &lt;em&gt;texto&lt;/em&gt; para itálico)</label><input id="t-hero-titulo" type="text"></div>
+    <div class="field"><label>Subtítulo</label><textarea id="t-hero-subtitulo"></textarea></div>
+    <div class="field-row">
+      <div class="field"><label>Botão principal — texto</label><input id="t-hero-cta-primario" type="text"></div>
+      <div class="field"><label>Botão principal — link</label><input id="t-hero-cta-primario-link" type="text"></div>
+    </div>
+    <div class="field"><label>Botão secundário</label><input id="t-hero-cta-secundario" type="text"></div>
+
+    <div class="section-title">Serviços</div>
+    <div class="field"><label>Título da secção</label><input id="t-servicos-label" type="text"></div>
+    <div id="servicos-lista"></div>
+
+    <div class="section-title">Galeria</div>
+    <div class="field"><label>Título da secção</label><input id="t-galeria-label" type="text"></div>
+    <div class="field-row">
+      <div class="field"><label>Botão CTA — texto</label><input id="t-galeria-cta" type="text"></div>
+      <div class="field"><label>Botão CTA — link</label><input id="t-galeria-cta-link" type="text"></div>
+    </div>
+
+    <div class="section-title">Sobre</div>
+    <div class="field"><label>Título da secção</label><input id="t-sobre-label" type="text"></div>
+    <div class="field"><label>Texto</label><textarea id="t-sobre-texto" style="min-height:120px;"></textarea></div>
+    <div class="field">
+      <label>Skills / Tags</label>
+      <div id="skills-lista" class="skills-lista"></div>
+      <button class="btn-add-skill" onclick="addSkill()">+ Adicionar skill</button>
+    </div>
+
+    <div class="section-title">Contacto</div>
+    <div class="field-row">
+      <div class="field"><label>Número de telefone (ex: 965 768 387)</label><input id="t-contacto-telefone" type="text"></div>
+      <div class="field"><label>WhatsApp (só números, ex: 351965768387)</label><input id="t-contacto-whatsapp" type="text"></div>
+    </div>
+    <div class="field"><label>Email</label><input id="t-contacto-email" type="email"></div>
+
+    <div class="section-title">Rodapé</div>
+    <div class="field-row">
+      <div class="field"><label>Copyright</label><input id="t-footer-copyright" type="text"></div>
+      <div class="field"><label>Tagline</label><input id="t-footer-tagline" type="text"></div>
+    </div>
+
+  </div>
+
+  <!-- TAB: GALERIA -->
+  <div id="tab-galeria" class="tab-content">
+    <div id="projetos-lista"></div>
+    <button class="btn-add-projeto" onclick="addProjeto()">+ Adicionar projeto</button>
+  </div>
+
+  <!-- SAVE BAR -->
+  <div class="save-bar">
+    <button class="btn-save" id="btn-save" onclick="guardar()">Guardar e publicar</button>
+    <span id="status"></span>
+  </div>
+</div>
+
+<script>
+const REPO = 'joaorocha1991-cloud/maria-teresa-creations-site';
+const API  = `https://api.github.com/repos/${REPO}/contents/`;
+const TAG_LABELS = {
+  'impressao-3d': 'Impressão 3D',
+  'dtf-uv': 'DTF UV',
+  'laser': 'Laser',
+  'sublimacao': 'Sublimação',
+  'marcenaria': 'Marcenaria',
+  'textil': 'Têxtil',
+  'fosforescente': 'Fosforescente',
+};
+
+let token = '';
+let conteudo = {};
+let projetos = [];
+
+// ── AUTH ──────────────────────────────────────────────
+async function entrar() {
+  const t = document.getElementById('tokenInput').value.trim();
+  if (!t) return;
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}`, { headers: auth(t) });
+    if (!r.ok) throw new Error();
+    token = t;
+    localStorage.setItem('mtc_token', t);
+    document.getElementById('login-erro').style.display = 'none';
+    await abrirPainel();
+  } catch {
+    document.getElementById('login-erro').style.display = 'block';
+  }
+}
+
+function sair() {
+  localStorage.removeItem('mtc_token');
+  token = '';
+  document.getElementById('login').style.display = 'flex';
+  document.getElementById('painel').style.display = 'none';
+}
+
+function auth(t) { return { Authorization: `token ${t}`, 'Content-Type': 'application/json' }; }
+
+// ── INIT ──────────────────────────────────────────────
+window.addEventListener('load', async () => {
+  const saved = localStorage.getItem('mtc_token');
+  if (saved) {
+    try {
+      const r = await fetch(`https://api.github.com/repos/${REPO}`, { headers: auth(saved) });
+      if (r.ok) { token = saved; await abrirPainel(); return; }
+    } catch {}
+  }
+});
+
+document.getElementById('tokenInput').addEventListener('keydown', e => { if (e.key === 'Enter') entrar(); });
+
+async function abrirPainel() {
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('painel').style.display = 'block';
+  document.getElementById('repo-label').textContent = REPO;
+  await carregarDados();
+}
+
+// ── LOAD ──────────────────────────────────────────────
+async function carregarDados() {
+  setStatus('A carregar...', '');
+  [conteudo, projetos] = await Promise.all([
+    githubGet('conteudo.json'),
+    githubGet('projetos.json'),
+  ]);
+  preencherTextos();
+  renderGaleria();
+  setStatus('', '');
+}
+
+async function githubGet(path) {
+  const r = await fetch(API + path, { headers: auth(token) });
+  const data = await r.json();
+  return JSON.parse(atob(data.content.replace(/\n/g, '')));
+}
+
+async function githubGetSHA(path) {
+  const r = await fetch(API + path, { headers: auth(token) });
+  const data = await r.json();
+  return data.sha;
+}
+
+async function githubPut(path, content, message) {
+  const sha = await githubGetSHA(path);
+  const body = JSON.stringify({
+    message,
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+    sha,
+  });
+  const r = await fetch(API + path, { method: 'PUT', headers: auth(token), body });
+  if (!r.ok) throw new Error(await r.text());
+}
+
+async function githubUpload(filename, base64Content, message) {
+  let sha;
+  try { sha = await githubGetSHA(filename); } catch {}
+  const body = JSON.stringify({ message, content: base64Content, ...(sha ? { sha } : {}) });
+  const r = await fetch(API + filename, { method: 'PUT', headers: auth(token), body });
+  if (!r.ok) throw new Error(await r.text());
+}
+
+// ── TEXTOS ────────────────────────────────────────────
+function preencherTextos() {
+  const c = conteudo;
+  set('t-hero-eyebrow', c.hero.eyebrow);
+  set('t-hero-titulo', c.hero.titulo);
+  set('t-hero-subtitulo', c.hero.subtitulo);
+  set('t-hero-cta-primario', c.hero.cta_primario);
+  set('t-hero-cta-primario-link', c.hero.cta_primario_link);
+  set('t-hero-cta-secundario', c.hero.cta_secundario);
+  set('t-servicos-label', c.servicos.label);
+  set('t-galeria-label', c.galeria.label);
+  set('t-galeria-cta', c.galeria.cta);
+  set('t-galeria-cta-link', c.galeria.cta_link);
+  set('t-sobre-label', c.sobre.label);
+  set('t-sobre-texto', c.sobre.texto);
+  set('t-contacto-telefone', c.contacto.telefone);
+  set('t-contacto-whatsapp', c.contacto.whatsapp);
+  set('t-contacto-email', c.contacto.email);
+  set('t-footer-copyright', c.footer.copyright);
+  set('t-footer-tagline', c.footer.tagline);
+
+  // Serviços
+  const sl = document.getElementById('servicos-lista');
+  sl.innerHTML = c.servicos.lista.map((s, i) => `
+    <div class="service-item">
+      <div class="service-num">Serviço ${i + 1}</div>
+      <div class="field"><label>Título</label><input data-s="${i}" data-f="titulo" type="text" value="${esc(s.titulo)}"></div>
+      <div class="field"><label>Descrição</label><input data-s="${i}" data-f="descricao" type="text" value="${esc(s.descricao)}"></div>
+    </div>`).join('');
+
+  // Skills
+  renderSkills(c.sobre.skills);
+}
+
+function renderSkills(skills) {
+  document.getElementById('skills-lista').innerHTML = skills.map((sk, i) => `
+    <div class="skill-row">
+      <input type="text" value="${esc(sk)}" data-skill="${i}">
+      <button class="btn-rm-skill" onclick="removeSkill(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addSkill() {
+  const skills = getSkills();
+  skills.push('Nova skill');
+  renderSkills(skills);
+}
+
+function removeSkill(i) {
+  const skills = getSkills();
+  skills.splice(i, 1);
+  renderSkills(skills);
+}
+
+function getSkills() {
+  return [...document.querySelectorAll('#skills-lista input')].map(el => el.value);
+}
+
+function lerTextos() {
+  conteudo.hero.eyebrow = get('t-hero-eyebrow');
+  conteudo.hero.titulo = get('t-hero-titulo');
+  conteudo.hero.subtitulo = get('t-hero-subtitulo');
+  conteudo.hero.cta_primario = get('t-hero-cta-primario');
+  conteudo.hero.cta_primario_link = get('t-hero-cta-primario-link');
+  conteudo.hero.cta_secundario = get('t-hero-cta-secundario');
+  conteudo.servicos.label = get('t-servicos-label');
+  document.querySelectorAll('#servicos-lista input').forEach(el => {
+    const i = +el.dataset.s, f = el.dataset.f;
+    if (conteudo.servicos.lista[i]) conteudo.servicos.lista[i][f] = el.value;
+  });
+  conteudo.galeria.label = get('t-galeria-label');
+  conteudo.galeria.cta = get('t-galeria-cta');
+  conteudo.galeria.cta_link = get('t-galeria-cta-link');
+  conteudo.sobre.label = get('t-sobre-label');
+  conteudo.sobre.texto = get('t-sobre-texto');
+  conteudo.sobre.skills = getSkills();
+  conteudo.contacto.telefone = get('t-contacto-telefone');
+  conteudo.contacto.whatsapp = get('t-contacto-whatsapp');
+  conteudo.contacto.email = get('t-contacto-email');
+  conteudo.footer.copyright = get('t-footer-copyright');
+  conteudo.footer.tagline = get('t-footer-tagline');
+}
+
+// ── GALERIA ───────────────────────────────────────────
+function renderGaleria() {
+  document.getElementById('projetos-lista').innerHTML = projetos.map((p, pi) => `
+    <div class="projeto-item" id="proj-${pi}">
+      <div class="projeto-header">
+        <div class="field"><label>Nome do projeto</label><input type="text" value="${esc(p.nome)}" data-pi="${pi}" class="proj-nome"></div>
+        <button class="btn-remover-projeto" onclick="removeProjeto(${pi})">Remover projeto</button>
+      </div>
+      <div class="imagens-lista" id="imgs-${pi}">
+        ${p.imagens.map((img, ii) => renderImagem(pi, ii, img)).join('')}
+      </div>
+      <button class="btn-add-img" onclick="addImagem(${pi})">+ Adicionar imagem</button>
+      <div class="upload-hint">Podes arrastar o ficheiro ou clicar para fazer upload direto</div>
+    </div>`).join('');
+}
+
+function renderImagem(pi, ii, img) {
+  const tagChecks = Object.entries(TAG_LABELS).map(([k, v]) => `
+    <label>
+      <input type="checkbox" data-pi="${pi}" data-ii="${ii}" data-tag="${k}" ${img.tags.includes(k) ? 'checked' : ''}>
+      ${v}
+    </label>`).join('');
+
+  return `<div class="imagem-item" id="img-${pi}-${ii}">
+    <div class="imagem-preview" id="prev-${pi}-${ii}">
+      ${img.src ? `<img src="${img.src}" onerror="this.style.display='none'">` : '<span>sem imagem</span>'}
+    </div>
+    <div class="imagem-fields">
+      <input type="text" placeholder="Ficheiro (ex: imagens/foto.jpg)" value="${esc(img.src)}" data-pi="${pi}" data-ii="${ii}" class="img-src" onchange="atualizarPreview(${pi},${ii},this.value)">
+      <input type="text" placeholder="Descrição da imagem (alt)" value="${esc(img.alt)}" data-pi="${pi}" data-ii="${ii}" class="img-alt">
+      <div class="tags-check">${tagChecks}</div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:0.78rem;cursor:pointer;margin-top:4px;">
+        <input type="file" accept="image/*" style="display:none" onchange="uploadImagem(event,${pi},${ii})">
+        <span style="color:var(--accent);text-decoration:underline;" onclick="this.previousElementSibling.click()">📎 Fazer upload de imagem</span>
+      </label>
+    </div>
+    <button class="btn-remover-img" onclick="removeImagem(${pi},${ii})" title="Remover imagem">✕</button>
+  </div>`;
+}
+
+function atualizarPreview(pi, ii, src) {
+  const prev = document.getElementById(`prev-${pi}-${ii}`);
+  if (prev) prev.innerHTML = src ? `<img src="${src}" onerror="this.style.display='none'">` : '<span>sem imagem</span>';
+}
+
+function addProjeto() {
+  projetos.push({ nome: 'Novo Projeto', imagens: [] });
+  renderGaleria();
+}
+
+function removeProjeto(pi) {
+  if (!confirm('Remover este projeto?')) return;
+  projetos.splice(pi, 1);
+  renderGaleria();
+}
+
+function addImagem(pi) {
+  projetos[pi].imagens.push({ src: '', alt: '', tags: [] });
+  renderGaleria();
+}
+
+function removeImagem(pi, ii) {
+  projetos[pi].imagens.splice(ii, 1);
+  renderGaleria();
+}
+
+async function uploadImagem(event, pi, ii) {
+  const file = event.target.files[0];
+  if (!file) return;
+  setStatus('A fazer upload...', '');
+  try {
+    const base64 = await fileToBase64(file);
+    const filename = `imagens/${file.name}`;
+    await githubUpload(filename, base64, `upload: ${file.name}`);
+    // update field
+    const srcInput = document.querySelector(`.img-src[data-pi="${pi}"][data-ii="${ii}"]`);
+    if (srcInput) { srcInput.value = filename; atualizarPreview(pi, ii, filename); }
+    setStatus(`✓ ${file.name} enviado`, 'ok');
+  } catch (e) {
+    setStatus('Erro no upload: ' + e.message, 'erro');
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function lerGaleria() {
+  projetos = [];
+  document.querySelectorAll('.projeto-item').forEach((pEl, pi) => {
+    const nome = pEl.querySelector('.proj-nome').value;
+    const imagens = [];
+    pEl.querySelectorAll('.imagem-item').forEach((iEl, ii) => {
+      const src = iEl.querySelector('.img-src').value;
+      const alt = iEl.querySelector('.img-alt').value;
+      const tags = [...iEl.querySelectorAll('input[type=checkbox]:checked')].map(cb => cb.dataset.tag);
+      imagens.push({ src, alt, tags });
+    });
+    projetos.push({ nome, imagens });
+  });
+}
+
+// ── SAVE ──────────────────────────────────────────────
+async function guardar() {
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true;
+  setStatus('A guardar...', '');
+  try {
+    lerTextos();
+    lerGaleria();
+    await Promise.all([
+      githubPut('conteudo.json', conteudo, 'update: conteúdo via painel'),
+      githubPut('projetos.json', projetos, 'update: galeria via painel'),
+    ]);
+    setStatus('✓ Publicado! O site atualiza em ~30 segundos.', 'ok');
+  } catch (e) {
+    setStatus('Erro: ' + e.message, 'erro');
+  }
+  btn.disabled = false;
+}
+
+// ── UTILS ─────────────────────────────────────────────
+function mudarTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+function set(id, val) { const el = document.getElementById(id); if (el) { el.tagName === 'TEXTAREA' ? el.value = val : el.value = val; } }
+function get(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function esc(s) { return (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function setStatus(msg, cls) { const s = document.getElementById('status'); s.textContent = msg; s.className = cls; }
+</script>
+</body>
+</html>

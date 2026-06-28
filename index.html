@@ -657,17 +657,17 @@
 <main class="wrap" id="top">
 
   <section class="hero reveal">
-    <p class="eyebrow mono">Aberto a ideias por resolver</p>
-    <h1 class="reveal">Resolvemos o que<br class="br-desktop"> ainda não <em>existe</em><em>.</em></h1>
-    <p class="hero-sub">A Maria Teresa Creations não é só impressão 3D. É a oficina que arranja a solução certa para cada ideia — desenho 3D, marcenaria, sublimação, DTF UV ou gravação a laser, conforme o que o problema pedir.</p>
+    <p id="hero-eyebrow" class="eyebrow mono">Aberto a ideias por resolver</p>
+    <h1 id="hero-titulo" class="reveal">Resolvemos o que<br class="br-desktop"> ainda não <em>existe</em><em>.</em></h1>
+    <p id="hero-subtitulo" class="hero-sub">A Maria Teresa Creations não é só impressão 3D. É a oficina que arranja a solução certa para cada ideia — desenho 3D, marcenaria, sublimação, DTF UV ou gravação a laser, conforme o que o problema pedir.</p>
     <div class="hero-cta">
-      <a href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Conta-me a tua ideia</a>
-      <a href="#galeria" class="btn btn-ghost">Ver o que já fizemos</a>
+      <a id="hero-cta-primario" href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Conta-me a tua ideia</a>
+      <a id="hero-cta-secundario" href="#galeria" class="btn btn-ghost">Ver o que já fizemos</a>
     </div>
   </section>
 
   <section class="section section--alt reveal-child" id="servicos">
-    <p class="section-label mono reveal">Técnicas que usamos</p>
+    <p id="servicos-label" class="section-label mono reveal">Técnicas que usamos</p>
 
     <div class="services-grid">
 
@@ -729,23 +729,23 @@
   </section>
 
   <section class="section reveal" id="galeria">
-    <p class="section-label mono reveal">Galeria de projetos</p>
+    <p id="galeria-label" class="section-label mono reveal">Galeria de projetos</p>
 
     <button class="filter-reset" id="filterReset">← Ver todos os projetos</button>
 
     <div id="projectsList" role="list" aria-label="Galeria de projetos"></div>
 
     <div class="reveal" style="margin-top: clamp(40px,6vw,64px); text-align:center;">
-      <a href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Quero algo assim</a>
+      <a id="galeria-cta" href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Quero algo assim</a>
     </div>
   </section>
 
   <section class="section section--alt reveal" id="sobre">
-    <p class="section-label mono reveal">Sobre</p>
+    <p id="sobre-label" class="section-label mono reveal">Sobre</p>
     <div class="about-grid">
-      <p class="about-text">Não nos prendemos a uma técnica — prendemo-nos ao problema. Já desenhámos móveis para enviar a marceneiros, porta-chaves com NFC e brilho no escuro, jogos de cartas, azulejos personalizados, inserts para board games e soluções para artistas plásticos materializarem ideias. Se ainda não existe, é capaz de ser por isto que ainda não falaste connosco.</p>
+      <p id="sobre-texto" class="about-text">Não nos prendemos a uma técnica — prendemo-nos ao problema. Já desenhámos móveis para enviar a marceneiros, porta-chaves com NFC e brilho no escuro, jogos de cartas, azulejos personalizados, inserts para board games e soluções para artistas plásticos materializarem ideias. Se ainda não existe, é capaz de ser por isto que ainda não falaste connosco.</p>
       <div>
-        <div class="skills">
+        <div id="sobre-skills" class="skills">
           <span class="skill-tag">Desenho 3D</span>
           <span class="skill-tag">Marcenaria técnica</span>
           <span class="skill-tag">DTF UV</span>
@@ -759,17 +759,17 @@
   </section>
 
   <section class="section reveal" id="contacto">
-    <p class="section-label mono reveal">Contacto</p>
-    <a href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer" class="contact-main"><span>965 768 387</span></a>
+    <p id="contacto-label" class="section-label mono reveal">Contacto</p>
+    <a id="contacto-whatsapp" href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer" class="contact-main"><span id="contacto-telefone">965 768 387</span></a>
 
     <div class="contact-list">
-      <a href="mailto:tomariateresacreations@gmail.com">
+      <a id="contacto-email-link" href="mailto:tomariateresacreations@gmail.com">
         <span>Email</span>
-        <span class="mono">tomariateresacreations@gmail.com</span>
+        <span id="contacto-email-texto" class="mono">tomariateresacreations@gmail.com</span>
       </a>
-      <a href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer">
+      <a id="contacto-whatsapp-link" href="https://wa.me/351965768387" target="_blank" rel="noopener noreferrer">
         <span>WhatsApp</span>
-        <span class="mono">965 768 387</span>
+        <span id="contacto-whatsapp-texto" class="mono">965 768 387</span>
       </a>
     </div>
   </section>
@@ -777,8 +777,8 @@
 </main>
 
 <footer>
-  <span>© 2026 Maria Teresa Creations</span>
-  <span>Feito à mão, peça a peça</span>
+  <span id="footer-copyright">© 2026 Maria Teresa Creations</span>
+  <span id="footer-tagline">Feito à mão, peça a peça</span>
 </footer>
 
 <script>
@@ -800,6 +800,40 @@
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') navLinks.classList.remove('is-open'); });
   window.addEventListener('resize', () => { if (window.innerWidth >= 700) navLinks.classList.remove('is-open'); });
+
+  // CONTEÚDO DO SITE — carregado do conteudo.json
+  fetch('conteudo.json').then(r => r.json()).then(c => {
+    const s = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const h = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+    h('hero-eyebrow', c.hero.eyebrow);
+    h('hero-titulo', c.hero.titulo);
+    s('hero-subtitulo', c.hero.subtitulo);
+    const cta1 = document.getElementById('hero-cta-primario');
+    if (cta1) { cta1.textContent = c.hero.cta_primario; cta1.href = c.hero.cta_primario_link; }
+    s('hero-cta-secundario', c.hero.cta_secundario);
+    s('servicos-label', c.servicos.label);
+    document.querySelectorAll('.service-title').forEach((el, i) => { if (c.servicos.lista[i]) el.textContent = c.servicos.lista[i].titulo; });
+    document.querySelectorAll('.service-meta').forEach((el, i)  => { if (c.servicos.lista[i]) el.textContent = c.servicos.lista[i].descricao; });
+    s('galeria-label', c.galeria.label);
+    const gcta = document.getElementById('galeria-cta');
+    if (gcta) { gcta.textContent = c.galeria.cta; gcta.href = c.galeria.cta_link; }
+    s('sobre-label', c.sobre.label);
+    s('sobre-texto', c.sobre.texto);
+    const skills = document.getElementById('sobre-skills');
+    if (skills) skills.innerHTML = c.sobre.skills.map(sk => `<span class="skill-tag">${sk}</span>`).join('');
+    s('contacto-label', c.contacto.label);
+    s('contacto-telefone', c.contacto.telefone);
+    const wa = document.getElementById('contacto-whatsapp');
+    if (wa) wa.href = `https://wa.me/${c.contacto.whatsapp}`;
+    const waLink = document.getElementById('contacto-whatsapp-link');
+    if (waLink) waLink.href = `https://wa.me/${c.contacto.whatsapp}`;
+    s('contacto-email-texto', c.contacto.email);
+    const emailLink = document.getElementById('contacto-email-link');
+    if (emailLink) emailLink.href = `mailto:${c.contacto.email}`;
+    s('contacto-whatsapp-texto', c.contacto.telefone);
+    s('footer-copyright', c.footer.copyright);
+    s('footer-tagline', c.footer.tagline);
+  }).catch(() => {});
 
   // FILTROS DA GALERIA
   const tagLabels = {
