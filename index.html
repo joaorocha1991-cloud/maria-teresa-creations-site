@@ -342,7 +342,17 @@
     background: var(--accent);
     border-color: var(--accent);
     color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
+  .filter-clear{
+    font-size: 1rem;
+    line-height: 1;
+    opacity: 0.75;
+    cursor: pointer;
+  }
+  .filter-clear:hover{ opacity: 1; }
   .project-card.hidden{ display: none; }
 
   /* GALLERY */
@@ -876,8 +886,17 @@
     window.scrollTo({ top: scrollY, behavior: 'instant' });
     requestAnimationFrame(() => window.scrollTo({ top: scrollY, behavior: 'instant' }));
 
-    // marcar botão ativo (recriados pelo initGaleria)
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
+    // marcar botão ativo e adicionar × para deselecionar
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.tag === tag);
+      if (b.dataset.tag === tag) {
+        const x = document.createElement('span');
+        x.className = 'filter-clear';
+        x.textContent = '×';
+        x.addEventListener('click', e => { e.stopPropagation(); applyFilter(null); });
+        b.appendChild(x);
+      }
+    });
   };
 
   filterReset.addEventListener('click', () => applyFilter(null));
