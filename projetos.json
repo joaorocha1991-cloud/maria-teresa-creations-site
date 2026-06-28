@@ -70,99 +70,112 @@
     "nome": "Outros Projetos",
     "imagens": [
       {
-        "src": "imagens/board-game-insert-1.jpg",
-        "alt": "Projeto laser",
-        "tags": [
-          "impressao-3d"
-        ]
-      },
-      {
-        "src": "imagens/board-game-insert-2.jpg",
-        "alt": "Projeto sublimação",
-        "tags": [
-          "impressao-3d"
-        ]
-      },
-      {
         "src": "imagens/board-game-insert-3.jpg",
         "alt": "Projeto marcenaria",
         "tags": [
-          "impressao-3d"
+          "impressao-3d",
+          "board-game"
         ]
       },
       {
         "src": "imagens/board-game-insert-4.jpg",
         "alt": "Projeto têxtil",
         "tags": [
-          "impressao-3d"
+          "impressao-3d",
+          "board-game"
         ]
       },
       {
         "src": "imagens/board-game-insert-5.jpg",
         "alt": "Projeto DTF UV",
         "tags": [
-          "impressao-3d"
+          "impressao-3d",
+          "board-game"
         ]
       },
       {
         "src": "imagens/board-game-insert-6.jpg",
         "alt": "Projeto impressão",
         "tags": [
-          "impressao-3d"
+          "impressao-3d",
+          "board-game"
         ]
       },
       {
         "src": "imagens/board-game-insert-7.jpg",
         "alt": "",
         "tags": [
-          "impressao-3d"
+          "impressao-3d",
+          "board-game"
         ]
       },
       {
         "src": "imagens/board-game-insert-8.jpg",
         "alt": "",
-        "tags": []
+        "tags": [
+          "impressao-3d",
+          "board-game"
+        ]
       },
       {
         "src": "imagens/board-game-insert-9.jpg",
         "alt": "",
-        "tags": []
-      },
-      {
-        "src": "imagens/board-game-insert-10.jpg",
-        "alt": "",
         "tags": [
-          "impressao-3d"
+          "impressao-3d",
+          "board-game"
         ]
       },
       {
         "src": "imagens/board-game-insert-11.jpg",
         "alt": "",
-        "tags": []
+        "tags": [
+          "impressao-3d",
+          "board-game"
+        ]
+      },
+      {
+        "src": "imagens/board-game-insert-10.jpg",
+        "alt": "",
+        "tags": [
+          "impressao-3d",
+          "board-game"
+        ]
+      },
+      {
+        "src": "imagens/board-game-insert-2.jpg",
+        "alt": "Projeto sublimação",
+        "tags": [
+          "impressao-3d",
+          "board-game"
+        ]
       },
       {
         "src": "imagens/bookreview.jpg",
-        "alt": "",
+        "alt": "Bookmarks Book Review",
         "tags": []
       },
       {
         "src": "imagens/love-cupons.jpg",
-        "alt": "",
+        "alt": "Love cupons",
         "tags": []
       },
       {
         "src": "imagens/luminarias-2.jpg",
-        "alt": "",
-        "tags": []
+        "alt": "Luminária Criança",
+        "tags": [
+          "luminarias"
+        ]
       },
       {
         "src": "imagens/luminarias-1.jpg",
         "alt": "",
-        "tags": []
+        "tags": [
+          "luminarias"
+        ]
       },
       {
         "src": "imagens/wouldyourather.jpg",
-        "alt": "",
+        "alt": "Card Game Would you rather",
         "tags": []
       }
     ]
