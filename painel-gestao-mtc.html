@@ -221,16 +221,9 @@ let projetos = [];
 async function entrar() {
   const t = document.getElementById('tokenInput').value.trim();
   if (!t) return;
-  try {
-    const r = await fetch(`https://api.github.com/repos/${REPO}`, { headers: auth(t) });
-    if (!r.ok) throw new Error();
-    token = t;
-    localStorage.setItem('mtc_token', t);
-    document.getElementById('login-erro').style.display = 'none';
-    await abrirPainel();
-  } catch {
-    document.getElementById('login-erro').style.display = 'block';
-  }
+  token = t;
+  localStorage.setItem('mtc_token', t);
+  await abrirPainel();
 }
 
 function sair() {
@@ -245,12 +238,7 @@ function auth(t) { return { Authorization: `token ${t}`, 'Content-Type': 'applic
 // ── INIT ──────────────────────────────────────────────
 window.addEventListener('load', async () => {
   const saved = localStorage.getItem('mtc_token');
-  if (saved) {
-    try {
-      const r = await fetch(`https://api.github.com/repos/${REPO}`, { headers: auth(saved) });
-      if (r.ok) { token = saved; await abrirPainel(); return; }
-    } catch {}
-  }
+  if (saved) { token = saved; await abrirPainel(); }
 });
 
 document.getElementById('tokenInput').addEventListener('keydown', e => { if (e.key === 'Enter') entrar(); });
