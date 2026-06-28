@@ -834,7 +834,14 @@
     s('footer-copyright', c.footer.copyright);
     s('footer-tagline', c.footer.tagline);
     if (c.tags) tagLabels = c.tags;
-  }).catch(() => {});
+  }).catch(() => {}).finally(() => {
+    fetch('projetos.json?t=' + Date.now())
+      .then(r => r.json())
+      .then(projetos => {
+        document.getElementById('projectsList').innerHTML = projetos.map(buildCard).join('');
+        initGaleria();
+      });
+  });
 
   // FILTROS DA GALERIA
   let tagLabels = {
@@ -898,13 +905,6 @@
       </div>
     </div>`;
   }
-
-  fetch('projetos.json?t=' + Date.now())
-    .then(r => r.json())
-    .then(projetos => {
-      document.getElementById('projectsList').innerHTML = projetos.map(buildCard).join('');
-      initGaleria();
-    });
 
   function initGaleria() {
   document.querySelectorAll('.project-card').forEach(card => {
