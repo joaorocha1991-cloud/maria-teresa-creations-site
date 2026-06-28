@@ -61,9 +61,7 @@
   .btn-remover-projeto:hover{ border-color: var(--red); color: var(--red); }
 
   .imagens-lista{ display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-  .imagem-item{ display: grid; grid-template-columns: 18px 72px 1fr auto auto; gap: 10px; align-items: start; background: var(--bg-alt); border-radius: 8px; padding: 10px; transition: opacity 0.15s; }
-  .imagem-item.dragging{ opacity: 0.35; }
-  .imagem-item.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
+  .imagem-item{ display: grid; grid-template-columns: 72px 1fr auto auto; gap: 10px; align-items: start; background: var(--bg-alt); border-radius: 8px; padding: 10px; }
   .imagem-preview{ width: 72px; height: 72px; object-fit: cover; border-radius: 6px; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--muted); overflow: hidden; }
   .imagem-preview img{ width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
   .imagem-fields{ display: flex; flex-direction: column; gap: 6px; }
@@ -79,12 +77,7 @@
   .btn-ordem{ background: none; border: 1px solid var(--line); color: var(--muted); cursor: pointer; font-size: 0.75rem; padding: 3px 6px; border-radius: 4px; line-height: 1; }
   .btn-ordem:hover{ border-color: var(--accent); color: var(--accent); }
   .btn-ordem:disabled{ opacity: 0.3; cursor: default; }
-  .drag-handle{ cursor: grab; color: var(--muted); font-size: 1rem; padding: 2px 0; user-select: none; opacity: 0.5; display: flex; align-items: center; justify-content: center; }
-  .drag-handle:hover{ opacity: 1; color: var(--accent); }
-  .drag-handle:active{ cursor: grabbing; }
-  .projeto-item{ border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-bottom: 16px; background: var(--white); transition: opacity 0.15s; }
-  .projeto-item.dragging{ opacity: 0.35; }
-  .projeto-item.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
+  .projeto-item{ border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-bottom: 16px; background: var(--white); }
 
   .btn-add-img{ font-size: 0.8rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 7px; padding: 8px 14px; cursor: pointer; width: 100%; margin-bottom: 4px; }
   .btn-add-img:hover{ background: #f0f9f4; }
@@ -438,7 +431,6 @@ function renderGaleria() {
   document.getElementById('projetos-lista').innerHTML = projetos.map((p, pi) => `
     <div class="projeto-item" id="proj-${pi}" data-pi="${pi}">
       <div class="projeto-header">
-        <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
         <div class="field"><label>Nome do projeto</label><input type="text" value="${esc(p.nome)}" data-pi="${pi}" class="proj-nome"></div>
         <button class="btn-remover-projeto" onclick="removeProjeto(${pi})">Remover projeto</button>
       </div>
@@ -448,7 +440,6 @@ function renderGaleria() {
       <button class="btn-add-img" onclick="addImagem(${pi})">+ Adicionar imagem</button>
       <div class="upload-hint">Podes arrastar o ficheiro ou clicar para fazer upload direto</div>
     </div>`).join('');
-  initDragDrop();
 }
 
 function renderImagem(pi, ii, img) {
@@ -459,7 +450,6 @@ function renderImagem(pi, ii, img) {
     </label>`).join('');
 
   return `<div class="imagem-item" id="img-${pi}-${ii}" data-pi="${pi}" data-ii="${ii}">
-    <div class="drag-handle" title="Arrastar para reordenar">⠿</div>
     <div class="imagem-preview" id="prev-${pi}-${ii}">
       ${img.src ? `<img src="${img.src}" draggable="false" onerror="this.style.display='none'">` : '<span>sem imagem</span>'}
     </div>
@@ -517,102 +507,6 @@ function removeImagem(pi, ii) {
   renderGaleria();
 }
 
-let dragSrc = null; // { type: 'img'|'proj', pi, ii? }
-
-function clearDragOver() {
-  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-}
-
-function initDragDrop() {
-  // ── IMAGENS ──────────────────────────────────────────
-  document.querySelectorAll('.imagem-item').forEach(el => {
-    el.draggable = true;
-
-    el.addEventListener('dragstart', e => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-        e.preventDefault(); return;
-      }
-      dragSrc = { type: 'img', pi: +el.dataset.pi, ii: +el.dataset.ii };
-      e.dataTransfer.effectAllowed = 'move';
-      setTimeout(() => el.classList.add('dragging'), 0);
-    });
-
-    el.addEventListener('dragend', () => {
-      el.classList.remove('dragging');
-      clearDragOver();
-      dragSrc = null;
-    });
-
-    el.addEventListener('dragover', e => {
-      if (!dragSrc || dragSrc.type !== 'img') return;   // não previne default → evento sobe ao projeto-item
-      if (dragSrc.pi !== +el.dataset.pi) return;         // só dentro do mesmo projeto
-      e.preventDefault();
-      e.stopPropagation();
-      clearDragOver();
-      if (dragSrc.ii !== +el.dataset.ii) el.classList.add('drag-over');
-    });
-
-    el.addEventListener('drop', e => {
-      // verificar tipo ANTES de qualquer preventDefault
-      if (!dragSrc || dragSrc.type !== 'img') return;
-      e.preventDefault();
-      e.stopPropagation();
-      const tPi = +el.dataset.pi, tIi = +el.dataset.ii;
-      if (dragSrc.pi !== tPi || dragSrc.ii === tIi) return;
-      lerGaleria();
-      const [moved] = projetos[tPi].imagens.splice(dragSrc.ii, 1);
-      projetos[tPi].imagens.splice(tIi, 0, moved);
-      dragSrc = null;
-      renderGaleria();
-    });
-  });
-
-  // ── PROJETOS ─────────────────────────────────────────
-  document.querySelectorAll('.projeto-item').forEach(el => {
-    // drag ativo apenas quando o handle é o ponto de partida
-    const handle = el.querySelector(':scope > .projeto-header > .drag-handle');
-    if (handle) {
-      handle.addEventListener('pointerdown', () => { el.draggable = true; });
-      document.addEventListener('pointerup', () => {
-        if (!dragSrc) el.draggable = false;
-      }, { once: true });
-    }
-    el.draggable = false;
-
-    el.addEventListener('dragstart', e => {
-      if (!el.draggable) { e.preventDefault(); return; }
-      dragSrc = { type: 'proj', pi: +el.dataset.pi };
-      e.dataTransfer.effectAllowed = 'move';
-      setTimeout(() => el.classList.add('dragging'), 0);
-    });
-
-    el.addEventListener('dragend', () => {
-      el.draggable = false;
-      el.classList.remove('dragging');
-      clearDragOver();
-      dragSrc = null;
-    });
-
-    el.addEventListener('dragover', e => {
-      if (!dragSrc || dragSrc.type !== 'proj') return;
-      e.preventDefault();   // permite drop (funciona mesmo que cursor esteja sobre filho)
-      clearDragOver();
-      if (dragSrc.pi !== +el.dataset.pi) el.classList.add('drag-over');
-    });
-
-    el.addEventListener('drop', e => {
-      if (!dragSrc || dragSrc.type !== 'proj') return;
-      e.preventDefault();
-      const tPi = +el.dataset.pi;
-      if (dragSrc.pi === tPi) return;
-      lerGaleria();
-      const [moved] = projetos.splice(dragSrc.pi, 1);
-      projetos.splice(tPi, 0, moved);
-      dragSrc = null;
-      renderGaleria();
-    });
-  });
-}
 
 function moverImagem(pi, ii, dir) {
   lerGaleria();
