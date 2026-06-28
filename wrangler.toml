@@ -1,6 +1,7 @@
 name = "maria-teresa-creations-site"
 compatibility_date = "2024-01-01"
+main = "worker.js"
 
 [assets]
+binding = "ASSETS"
 directory = "./"
-exclude = [".git/**", ".wrangler/**", ".claude/**", ".github/**", "wrangler.toml", ".wranglerignore", ".gitignore"]
