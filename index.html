@@ -870,8 +870,10 @@
           .map(p => ({ ...p, imagens: p.imagens.filter(img => img.tags.includes(tag)) }))
           .filter(p => p.imagens.length > 0);
 
+    const scrollY = window.scrollY;
     document.getElementById('projectsList').innerHTML = filtered.map(buildCard).join('');
     initGaleria();
+    window.scrollTo({ top: scrollY, behavior: 'instant' });
 
     // marcar botão ativo (recriados pelo initGaleria)
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
