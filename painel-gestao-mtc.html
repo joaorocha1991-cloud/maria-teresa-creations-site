@@ -363,12 +363,16 @@ function renderTags() {
 }
 
 function addTag() {
+  lerGaleria();
+  lerTags();
   TAG_LABELS['nova-tag-' + Date.now()] = 'Nova Tag';
   renderTags();
   renderGaleria();
 }
 
 function removeTag(i) {
+  lerGaleria();
+  lerTags();
   const keys = Object.keys(TAG_LABELS);
   delete TAG_LABELS[keys[i]];
   renderTags();
@@ -513,80 +517,98 @@ function removeImagem(pi, ii) {
   renderGaleria();
 }
 
-let dragState = null;
+let dragSrc = null; // { type: 'img'|'proj', pi, ii? }
+
+function clearDragOver() {
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
 
 function initDragDrop() {
   // ── IMAGENS ──────────────────────────────────────────
   document.querySelectorAll('.imagem-item').forEach(el => {
     el.draggable = true;
+
     el.addEventListener('dragstart', e => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') { e.preventDefault(); return; }
-      dragState = { type: 'img', pi: +el.dataset.pi, ii: +el.dataset.ii };
-      setTimeout(() => el.classList.add('dragging'), 0);
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        e.preventDefault(); return;
+      }
+      dragSrc = { type: 'img', pi: +el.dataset.pi, ii: +el.dataset.ii };
       e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => el.classList.add('dragging'), 0);
     });
+
     el.addEventListener('dragend', () => {
       el.classList.remove('dragging');
-      document.querySelectorAll('.imagem-item, .projeto-item').forEach(i => i.classList.remove('drag-over'));
-      dragState = null;
+      clearDragOver();
+      dragSrc = null;
     });
+
     el.addEventListener('dragover', e => {
-      if (!dragState || dragState.type !== 'img' || dragState.pi !== +el.dataset.pi) return;
+      if (!dragSrc || dragSrc.type !== 'img') return;   // não previne default → evento sobe ao projeto-item
+      if (dragSrc.pi !== +el.dataset.pi) return;         // só dentro do mesmo projeto
       e.preventDefault();
       e.stopPropagation();
-      document.querySelectorAll('.imagem-item').forEach(i => i.classList.remove('drag-over'));
-      if (dragState.ii !== +el.dataset.ii) el.classList.add('drag-over');
+      clearDragOver();
+      if (dragSrc.ii !== +el.dataset.ii) el.classList.add('drag-over');
     });
+
     el.addEventListener('drop', e => {
+      // verificar tipo ANTES de qualquer preventDefault
+      if (!dragSrc || dragSrc.type !== 'img') return;
       e.preventDefault();
       e.stopPropagation();
-      if (!dragState || dragState.type !== 'img') return;
       const tPi = +el.dataset.pi, tIi = +el.dataset.ii;
-      if (dragState.pi !== tPi || dragState.ii === tIi) return;
+      if (dragSrc.pi !== tPi || dragSrc.ii === tIi) return;
       lerGaleria();
-      const [moved] = projetos[tPi].imagens.splice(dragState.ii, 1);
+      const [moved] = projetos[tPi].imagens.splice(dragSrc.ii, 1);
       projetos[tPi].imagens.splice(tIi, 0, moved);
-      dragState = null;
+      dragSrc = null;
       renderGaleria();
     });
   });
 
   // ── PROJETOS ─────────────────────────────────────────
   document.querySelectorAll('.projeto-item').forEach(el => {
-    // drag só arranca a partir do handle
-    const handle = el.querySelector('.drag-handle');
+    // drag ativo apenas quando o handle é o ponto de partida
+    const handle = el.querySelector(':scope > .projeto-header > .drag-handle');
     if (handle) {
-      handle.addEventListener('mousedown', () => { el.draggable = true; });
-      handle.addEventListener('mouseleave', () => { if (!dragState) el.draggable = false; });
+      handle.addEventListener('pointerdown', () => { el.draggable = true; });
+      document.addEventListener('pointerup', () => {
+        if (!dragSrc) el.draggable = false;
+      }, { once: true });
     }
     el.draggable = false;
 
     el.addEventListener('dragstart', e => {
-      dragState = { type: 'proj', pi: +el.dataset.pi };
-      setTimeout(() => el.classList.add('dragging'), 0);
+      if (!el.draggable) { e.preventDefault(); return; }
+      dragSrc = { type: 'proj', pi: +el.dataset.pi };
       e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => el.classList.add('dragging'), 0);
     });
+
     el.addEventListener('dragend', () => {
       el.draggable = false;
       el.classList.remove('dragging');
-      document.querySelectorAll('.projeto-item').forEach(i => i.classList.remove('drag-over'));
-      dragState = null;
+      clearDragOver();
+      dragSrc = null;
     });
+
     el.addEventListener('dragover', e => {
-      if (!dragState || dragState.type !== 'proj') return;
-      e.preventDefault();
-      document.querySelectorAll('.projeto-item').forEach(i => i.classList.remove('drag-over'));
-      if (dragState.pi !== +el.dataset.pi) el.classList.add('drag-over');
+      if (!dragSrc || dragSrc.type !== 'proj') return;
+      e.preventDefault();   // permite drop (funciona mesmo que cursor esteja sobre filho)
+      clearDragOver();
+      if (dragSrc.pi !== +el.dataset.pi) el.classList.add('drag-over');
     });
+
     el.addEventListener('drop', e => {
+      if (!dragSrc || dragSrc.type !== 'proj') return;
       e.preventDefault();
-      if (!dragState || dragState.type !== 'proj') return;
       const tPi = +el.dataset.pi;
-      if (dragState.pi === tPi) return;
+      if (dragSrc.pi === tPi) return;
       lerGaleria();
-      const [moved] = projetos.splice(dragState.pi, 1);
+      const [moved] = projetos.splice(dragSrc.pi, 1);
       projetos.splice(tPi, 0, moved);
-      dragState = null;
+      dragSrc = null;
       renderGaleria();
     });
   });
