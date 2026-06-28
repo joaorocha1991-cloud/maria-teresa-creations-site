@@ -564,6 +564,11 @@ async function guardar() {
       githubPut('conteudo.json', conteudo, 'update: conteúdo via painel'),
       githubPut('projetos.json', projetos, 'update: galeria via painel'),
     ]);
+    await fetch(`https://api.github.com/repos/${REPO}/actions/workflows/deploy.yml/dispatches`, {
+      method: 'POST',
+      headers: auth(token),
+      body: JSON.stringify({ ref: 'master' }),
+    });
     setStatus('✓ Publicado! O site atualiza em ~30 segundos.', 'ok');
   } catch (e) {
     setStatus('Erro: ' + e.message, 'erro');
