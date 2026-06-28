@@ -516,25 +516,30 @@ function removeImagem(pi, ii) {
 let dragState = null;
 
 function initDragDrop() {
+  // ── IMAGENS ──────────────────────────────────────────
   document.querySelectorAll('.imagem-item').forEach(el => {
     el.draggable = true;
     el.addEventListener('dragstart', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') { e.preventDefault(); return; }
       dragState = { type: 'img', pi: +el.dataset.pi, ii: +el.dataset.ii };
       setTimeout(() => el.classList.add('dragging'), 0);
       e.dataTransfer.effectAllowed = 'move';
     });
     el.addEventListener('dragend', () => {
       el.classList.remove('dragging');
-      document.querySelectorAll('.imagem-item').forEach(i => i.classList.remove('drag-over'));
+      document.querySelectorAll('.imagem-item, .projeto-item').forEach(i => i.classList.remove('drag-over'));
+      dragState = null;
     });
     el.addEventListener('dragover', e => {
+      if (!dragState || dragState.type !== 'img' || dragState.pi !== +el.dataset.pi) return;
       e.preventDefault();
-      if (dragState?.type !== 'img' || dragState.pi !== +el.dataset.pi) return;
+      e.stopPropagation();
       document.querySelectorAll('.imagem-item').forEach(i => i.classList.remove('drag-over'));
-      el.classList.add('drag-over');
+      if (dragState.ii !== +el.dataset.ii) el.classList.add('drag-over');
     });
     el.addEventListener('drop', e => {
       e.preventDefault();
+      e.stopPropagation();
       if (!dragState || dragState.type !== 'img') return;
       const tPi = +el.dataset.pi, tIi = +el.dataset.ii;
       if (dragState.pi !== tPi || dragState.ii === tIi) return;
@@ -546,23 +551,32 @@ function initDragDrop() {
     });
   });
 
+  // ── PROJETOS ─────────────────────────────────────────
   document.querySelectorAll('.projeto-item').forEach(el => {
-    el.draggable = true;
+    // drag só arranca a partir do handle
+    const handle = el.querySelector('.drag-handle');
+    if (handle) {
+      handle.addEventListener('mousedown', () => { el.draggable = true; });
+      handle.addEventListener('mouseleave', () => { if (!dragState) el.draggable = false; });
+    }
+    el.draggable = false;
+
     el.addEventListener('dragstart', e => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') { e.preventDefault(); return; }
       dragState = { type: 'proj', pi: +el.dataset.pi };
       setTimeout(() => el.classList.add('dragging'), 0);
       e.dataTransfer.effectAllowed = 'move';
     });
     el.addEventListener('dragend', () => {
+      el.draggable = false;
       el.classList.remove('dragging');
       document.querySelectorAll('.projeto-item').forEach(i => i.classList.remove('drag-over'));
+      dragState = null;
     });
     el.addEventListener('dragover', e => {
+      if (!dragState || dragState.type !== 'proj') return;
       e.preventDefault();
-      if (dragState?.type !== 'proj') return;
       document.querySelectorAll('.projeto-item').forEach(i => i.classList.remove('drag-over'));
-      el.classList.add('drag-over');
+      if (dragState.pi !== +el.dataset.pi) el.classList.add('drag-over');
     });
     el.addEventListener('drop', e => {
       e.preventDefault();
