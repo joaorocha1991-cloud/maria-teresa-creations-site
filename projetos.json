@@ -68,6 +68,49 @@
   },
   {
     "nome": "Outros Projetos",
-    "imagens": []
+    "imagens": [
+      {
+        "src": "imagens/pokedex-1.jpg",
+        "alt": "Projeto laser",
+        "tags": [
+          "laser"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-2.jpg",
+        "alt": "Projeto sublimação",
+        "tags": [
+          "sublimacao"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-3.jpg",
+        "alt": "Projeto marcenaria",
+        "tags": [
+          "marcenaria"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-1.jpg",
+        "alt": "Projeto têxtil",
+        "tags": [
+          "textil"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-2.jpg",
+        "alt": "Projeto DTF UV",
+        "tags": [
+          "dtf-uv"
+        ]
+      },
+      {
+        "src": "imagens/pokedex-3.jpg",
+        "alt": "Projeto impressão",
+        "tags": [
+          "impressao-3d"
+        ]
+      }
+    ]
   }
 ]
