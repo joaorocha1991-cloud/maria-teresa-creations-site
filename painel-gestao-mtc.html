@@ -499,7 +499,11 @@ function renderGaleria() {
       </div>
       <div class="thumbs-grid" id="thumbs-${pi}" data-pi="${pi}">
         ${p.imagens.length === 0
-          ? `<div class="drop-zone" onclick="addImagem(${pi})">Arrasta imagens aqui ou clica para adicionar</div>`
+          ? `<div class="drop-zone"
+              onclick="addImagem(${pi})"
+              ondragover="event.preventDefault(); event.stopPropagation(); this.classList.add('drag-over-file')"
+              ondragleave="this.classList.remove('drag-over-file')"
+              ondrop="dropZoneDrop(event, ${pi})">Arrasta imagens aqui ou clica para adicionar</div>`
           : p.imagens.map((img, ii) => renderThumb(pi, ii, img)).join('') + `<button class="thumb-add" onclick="addImagem(${pi})" title="Adicionar imagem">+</button>`
         }
       </div>
@@ -706,6 +710,26 @@ function initDragDrop() {
       renderGaleria();
     });
   });
+}
+
+async function dropZoneDrop(e, pi) {
+  e.preventDefault(); e.stopPropagation();
+  e.currentTarget.classList.remove('drag-over-file');
+  const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/'));
+  if (!files.length) return;
+  for (const file of files) {
+    setStatus(`A fazer upload de ${file.name}...`, '');
+    try {
+      const base64 = await fileToBase64(file);
+      const filename = `imagens/${file.name}`;
+      await githubUpload(filename, base64, `upload: ${file.name}`);
+      projetos[pi].imagens.push({ src: filename, alt: file.name.replace(/\.[^.]+$/, ''), tags: [] });
+      setStatus(`✓ ${file.name} enviado`, 'ok');
+    } catch (err) {
+      setStatus(`Erro: ${err.message}`, 'erro');
+    }
+  }
+  renderGaleria();
 }
 
 function addProjeto() {
