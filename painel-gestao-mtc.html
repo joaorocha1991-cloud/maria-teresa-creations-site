@@ -715,6 +715,14 @@ function initDragDrop() {
 async function dropZoneDrop(e, pi) {
   e.preventDefault(); e.stopPropagation();
   e.currentTarget.classList.remove('drag-over-file');
+  // drag interno de miniatura
+  if (dragSrc && dragSrc.type === 'img') {
+    const [moved] = projetos[dragSrc.pi].imagens.splice(dragSrc.ii, 1);
+    projetos[pi].imagens.push(moved);
+    dragSrc = null;
+    renderGaleria();
+    return;
+  }
   const imgExts = /\.(jpe?g|png|gif|webp|avif|svg|bmp|tiff?)$/i;
   const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/') || imgExts.test(f.name));
   if (!files.length) {
