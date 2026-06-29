@@ -717,7 +717,18 @@ async function dropZoneDrop(e, pi) {
   e.currentTarget.classList.remove('drag-over-file');
   const imgExts = /\.(jpe?g|png|gif|webp|avif|svg|bmp|tiff?)$/i;
   const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/') || imgExts.test(f.name));
-  if (!files.length) { setStatus('Nenhuma imagem encontrada no drop', 'erro'); return; }
+  if (!files.length) {
+    // tentativa via URL (drag de browser, visualizador, etc.)
+    const url = (e.dataTransfer.getData('text/uri-list') || e.dataTransfer.getData('URL') || e.dataTransfer.getData('text/plain')).trim();
+    if (url) {
+      projetos[pi].imagens.push({ src: url, alt: '', tags: [] });
+      renderGaleria();
+      setStatus('Imagem adicionada — verifica o URL no modal', 'ok');
+    } else {
+      setStatus('Nenhuma imagem encontrada no drop', 'erro');
+    }
+    return;
+  }
   // adicionar ao painel imediatamente
   for (const file of files) {
     const filename = `imagens/${file.name}`;
