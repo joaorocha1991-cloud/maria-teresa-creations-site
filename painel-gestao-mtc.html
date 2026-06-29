@@ -716,20 +716,25 @@ async function dropZoneDrop(e, pi) {
   e.preventDefault(); e.stopPropagation();
   e.currentTarget.classList.remove('drag-over-file');
   const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/'));
-  if (!files.length) return;
+  if (!files.length) { setStatus('Nenhuma imagem encontrada no drop', 'erro'); return; }
+  // adicionar ao painel imediatamente
   for (const file of files) {
+    const filename = `imagens/${file.name}`;
+    projetos[pi].imagens.push({ src: filename, alt: file.name.replace(/\.[^.]+$/, ''), tags: [] });
+  }
+  renderGaleria();
+  // fazer upload em seguida
+  for (const file of files) {
+    const filename = `imagens/${file.name}`;
     setStatus(`A fazer upload de ${file.name}...`, '');
     try {
       const base64 = await fileToBase64(file);
-      const filename = `imagens/${file.name}`;
       await githubUpload(filename, base64, `upload: ${file.name}`);
-      projetos[pi].imagens.push({ src: filename, alt: file.name.replace(/\.[^.]+$/, ''), tags: [] });
-      setStatus(`✓ ${file.name} enviado`, 'ok');
+      setStatus(`✓ ${file.name} enviado — clica "Guardar e publicar" para finalizar`, 'ok');
     } catch (err) {
-      setStatus(`Erro: ${err.message}`, 'erro');
+      setStatus(`Upload falhou: ${err.message}`, 'erro');
     }
   }
-  renderGaleria();
 }
 
 function addProjeto() {
