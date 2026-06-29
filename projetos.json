@@ -84,14 +84,6 @@
         ]
       },
       {
-        "src": "imagens/board-game-insert-7.jpg",
-        "alt": "Insert ITO board game",
-        "tags": [
-          "impressao-3d",
-          "board-game"
-        ]
-      },
-      {
         "src": "imagens/board-game-insert-3.jpg",
         "alt": "Insert panda panda",
         "tags": [
@@ -102,6 +94,14 @@
       {
         "src": "imagens/board-game-insert-4.jpg",
         "alt": "insert Hola hoo",
+        "tags": [
+          "impressao-3d",
+          "board-game"
+        ]
+      },
+      {
+        "src": "imagens/board-game-insert-7.jpg",
+        "alt": "Insert ITO board game",
         "tags": [
           "impressao-3d",
           "board-game"
