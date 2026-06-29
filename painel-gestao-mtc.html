@@ -620,6 +620,10 @@ function initDragDrop() {
       dragSrc = null;
     });
     el.addEventListener('dragover', e => {
+      // ficheiro do sistema — deixar passar para o thumbs-grid
+      if (!dragSrc && e.dataTransfer.types.includes('Files')) {
+        e.preventDefault(); return;
+      }
       if (!dragSrc || dragSrc.type !== 'img') return;
       e.preventDefault(); e.stopPropagation();
       clearDragOver();
