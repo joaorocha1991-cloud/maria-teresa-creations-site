@@ -84,42 +84,40 @@
         ]
       },
       {
-        "src": "imagens/board-game-insert-2.jpg",
-        "alt": "Insert Ticket to Ride",
+        "src": "imagens/board-game-insert-3.jpg",
+        "alt": "Insert panda panda",
         "tags": [
           "impressao-3d",
           "board-game"
         ]
       },
       {
-        "src": "imagens/bookreview.jpg",
-        "alt": "Bookmarks Book Review",
+        "src": "imagens/board-game-insert-4.jpg",
+        "alt": "insert Hola hoo",
         "tags": [
-          "imprimives"
+          "impressao-3d",
+          "board-game"
         ]
       },
       {
-        "src": "imagens/love-cupons.jpg",
-        "alt": "Love cupons",
+        "src": "imagens/board-game-insert-7.jpg",
+        "alt": "Insert ITO board game",
         "tags": [
-          "imprimives"
+          "impressao-3d",
+          "board-game"
         ]
       },
       {
-        "src": "imagens/wouldyourather.jpg",
-        "alt": "Card Game Would you rather",
+        "src": "imagens/board-game-insert-5.jpg",
+        "alt": "Insert ITO",
         "tags": [
-          "imprimives"
+          "impressao-3d",
+          "board-game"
         ]
-      }
-    ]
-  },
-  {
-    "nome": "Board Game Inserts",
-    "imagens": [
+      },
       {
-        "src": "imagens/board-game-insert-3.jpg",
-        "alt": "Insert panda panda",
+        "src": "imagens/board-game-insert-6.jpg",
+        "alt": "Insert ITO",
         "tags": [
           "impressao-3d",
           "board-game"
@@ -158,35 +156,32 @@
         ]
       },
       {
-        "src": "imagens/board-game-insert-5.jpg",
-        "alt": "Insert ITO",
+        "src": "imagens/board-game-insert-2.jpg",
+        "alt": "Insert Ticket to Ride",
         "tags": [
           "impressao-3d",
           "board-game"
         ]
       },
       {
-        "src": "imagens/board-game-insert-6.jpg",
-        "alt": "Insert ITO",
+        "src": "imagens/bookreview.jpg",
+        "alt": "Bookmarks Book Review",
         "tags": [
-          "impressao-3d",
-          "board-game"
+          "imprimives"
         ]
       },
       {
-        "src": "imagens/board-game-insert-7.jpg",
-        "alt": "Insert ITO board game",
+        "src": "imagens/love-cupons.jpg",
+        "alt": "Love cupons",
         "tags": [
-          "impressao-3d",
-          "board-game"
+          "imprimives"
         ]
       },
       {
-        "src": "imagens/board-game-insert-4.jpg",
-        "alt": "insert Hola hoo",
+        "src": "imagens/wouldyourather.jpg",
+        "alt": "Card Game Would you rather",
         "tags": [
-          "impressao-3d",
-          "board-game"
+          "imprimives"
         ]
       }
     ]
