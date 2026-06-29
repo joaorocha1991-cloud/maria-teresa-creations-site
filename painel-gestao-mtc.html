@@ -37,6 +37,7 @@
   /* CONTENT */
   .tab-content{ display: none; padding: 32px 24px; max-width: 820px; margin: 0 auto; }
   .tab-content.active{ display: block; }
+  #tab-galeria{ max-width: none; }
 
   /* FORM */
   .section-title{ font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 28px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
@@ -55,42 +56,58 @@
   .service-num{ font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
 
   /* GALERIA */
-  .projeto-header{ display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .projeto-header .field{ flex: 1; margin: 0; }
-  .btn-remover-projeto{ background: none; border: 1px solid var(--line); color: var(--muted); padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; white-space: nowrap; }
-  .btn-remover-projeto:hover{ border-color: var(--red); color: var(--red); }
-
-  .imagens-lista{ display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-  .imagem-item{ display: grid; grid-template-columns: 20px 72px 1fr auto auto; gap: 10px; align-items: start; background: var(--bg-alt); border-radius: 8px; padding: 10px; transition: opacity 0.15s; }
-  .imagem-item.dragging{ opacity: 0.35; }
-  .imagem-item.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
-  .projeto-item.dragging{ opacity: 0.35; }
-  .projeto-item.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
-  .drag-handle{ cursor: grab; color: var(--muted); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; user-select: none; padding-top: 2px; opacity: 0.4; }
+  .projetos-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+  .projeto-card{ background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px; transition: opacity 0.15s; }
+  .projeto-card.dragging{ opacity: 0.35; }
+  .projeto-card.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
+  .projeto-card-header{ display: flex; align-items: center; gap: 8px; }
+  .projeto-card-header input{ flex: 1; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.85rem; font-family: inherit; font-weight: 600; }
+  .projeto-card-header input:focus{ outline: none; border-color: var(--accent); }
+  .btn-remover-projeto{ background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 4px; line-height: 1; flex-shrink: 0; }
+  .btn-remover-projeto:hover{ color: var(--red); }
+  .drag-handle{ cursor: grab; color: var(--muted); font-size: 1rem; user-select: none; opacity: 0.4; flex-shrink: 0; }
   .drag-handle:hover{ opacity: 1; color: var(--accent); }
-  .imagem-preview{ width: 72px; height: 72px; object-fit: cover; border-radius: 6px; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--muted); overflow: hidden; }
-  .imagem-preview img{ width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
-  .imagem-fields{ display: flex; flex-direction: column; gap: 6px; }
-  .imagem-fields input{ width: 100%; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.82rem; font-family: inherit; background: var(--white); }
-  .imagem-fields input:focus{ outline: none; border-color: var(--accent); }
-  .tags-check{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
-  .tags-check label{ display: flex; align-items: center; gap: 4px; font-size: 0.75rem; cursor: pointer; padding: 3px 8px; border-radius: 100px; border: 1px solid var(--line); background: var(--white); }
-  .tags-check label:has(input:checked){ background: var(--accent); border-color: var(--accent); color: var(--white); }
-  .tags-check input{ display: none; }
-  .btn-remover-img{ background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: 4px; line-height: 1; }
-  .btn-remover-img:hover{ color: var(--red); }
-  .img-ordem{ display: flex; flex-direction: column; gap: 2px; }
-  .btn-ordem{ background: none; border: 1px solid var(--line); color: var(--muted); cursor: pointer; font-size: 0.75rem; padding: 3px 6px; border-radius: 4px; line-height: 1; }
-  .btn-ordem:hover{ border-color: var(--accent); color: var(--accent); }
-  .btn-ordem:disabled{ opacity: 0.3; cursor: default; }
-  .projeto-item{ border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-bottom: 16px; background: var(--white); }
 
-  .btn-add-img{ font-size: 0.8rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 7px; padding: 8px 14px; cursor: pointer; width: 100%; margin-bottom: 4px; }
-  .btn-add-img:hover{ background: #f0f9f4; }
-  .upload-hint{ font-size: 0.72rem; color: var(--muted); text-align: center; }
+  .thumbs-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .img-thumb{ aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; position: relative; cursor: pointer; background: var(--bg-alt); border: 1px solid var(--line); transition: opacity 0.15s; }
+  .img-thumb.dragging{ opacity: 0.35; }
+  .img-thumb.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
+  .img-thumb img{ width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+  .img-thumb-empty{ display: flex; align-items: center; justify-content: center; height: 100%; font-size: 0.7rem; color: var(--muted); }
+  .img-thumb-overlay{ position: absolute; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; color: #fff; font-size: 1.1rem; }
+  .img-thumb:hover .img-thumb-overlay{ opacity: 1; }
+  .thumb-add{ aspect-ratio: 1/1; border-radius: 8px; border: 1.5px dashed var(--accent); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--accent); opacity: 0.6; }
+  .thumb-add:hover{ opacity: 1; background: #f0f9f4; }
 
   .btn-add-projeto{ font-size: 0.85rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 8px; padding: 12px; cursor: pointer; width: 100%; margin-top: 8px; }
   .btn-add-projeto:hover{ background: #f0f9f4; }
+
+  /* MODAL */
+  .modal-backdrop{ position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; }
+  .modal-backdrop.open{ display: flex; }
+  .modal-box{ background: var(--white); border-radius: 14px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  .modal-header{ display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 0; }
+  .modal-header h3{ font-size: 0.95rem; font-weight: 700; }
+  .modal-close{ background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); padding: 4px; }
+  .modal-close:hover{ color: var(--ink); }
+  .modal-body{ padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .modal-preview{ width: 100%; aspect-ratio: 16/9; background: var(--bg-alt); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .modal-preview img{ width: 100%; height: 100%; object-fit: contain; }
+  .modal-preview span{ font-size: 0.8rem; color: var(--muted); }
+  .modal-field label{ display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+  .modal-field input{ width: 100%; padding: 8px 11px; border: 1px solid var(--line); border-radius: 7px; font-size: 0.87rem; font-family: inherit; }
+  .modal-field input:focus{ outline: none; border-color: var(--accent); }
+  .tags-check{ display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags-check label{ display: flex; align-items: center; gap: 4px; font-size: 0.75rem; cursor: pointer; padding: 4px 10px; border-radius: 100px; border: 1px solid var(--line); background: var(--white); }
+  .tags-check label:has(input:checked){ background: var(--accent); border-color: var(--accent); color: var(--white); }
+  .tags-check input{ display: none; }
+  .modal-actions{ display: flex; gap: 8px; justify-content: space-between; padding-top: 4px; border-top: 1px solid var(--line); }
+  .btn-upload-modal{ font-size: 0.8rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+  .btn-upload-modal:hover{ background: #f0f9f4; }
+  .btn-remover-img-modal{ background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 6px; padding: 7px 12px; font-size: 0.8rem; cursor: pointer; }
+  .btn-remover-img-modal:hover{ border-color: var(--red); color: var(--red); }
+  .btn-fechar-modal{ background: var(--accent); color: var(--white); border: none; border-radius: 6px; padding: 7px 16px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+  .btn-fechar-modal:hover{ background: var(--accent-h); }
 
   /* SAVE BAR */
   .save-bar{ position: sticky; bottom: 0; background: var(--white); border-top: 1px solid var(--line); padding: 14px 24px; display: flex; align-items: center; gap: 14px; }
@@ -200,13 +217,50 @@
   <!-- TAB: GALERIA -->
   <div id="tab-galeria" class="tab-content active">
     <div class="section-title" style="margin-top:0;">Projetos</div>
-    <div id="projetos-lista"></div>
+    <div id="projetos-lista" class="projetos-grid"></div>
     <button class="btn-add-projeto" onclick="addProjeto()">+ Adicionar projeto</button>
 
     <div class="section-title">Tags disponíveis</div>
     <div id="tags-lista" class="skills-lista"></div>
     <button class="btn-add-skill" onclick="addTag()" style="margin-bottom:4px;">+ Adicionar tag</button>
     <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">O identificador (ex: <code>nova-tag</code>) não pode ter espaços nem maiúsculas. O rótulo é o nome que aparece no botão.</div>
+  </div>
+
+  <!-- MODAL EDIÇÃO DE IMAGEM -->
+  <div id="img-modal" class="modal-backdrop" onclick="modalBackdropClick(event)">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Editar imagem</h3>
+        <button class="modal-close" onclick="fecharModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-preview" id="modal-preview">
+          <span>sem imagem</span>
+        </div>
+        <div class="modal-field">
+          <label>Ficheiro / URL da imagem</label>
+          <input type="text" id="modal-src" placeholder="imagens/foto.jpg" oninput="modalPreviewAtualizar()">
+        </div>
+        <div class="modal-field">
+          <label>Descrição (alt text)</label>
+          <input type="text" id="modal-alt" placeholder="Descreve a imagem">
+        </div>
+        <div class="modal-field">
+          <label>Tags</label>
+          <div class="tags-check" id="modal-tags"></div>
+        </div>
+        <div class="modal-actions">
+          <div style="display:flex;gap:8px;">
+            <label class="btn-upload-modal" style="cursor:pointer;">
+              <input type="file" accept="image/*" style="display:none" onchange="modalUpload(event)">
+              📎 Upload
+            </label>
+            <button class="btn-remover-img-modal" onclick="modalRemover()">Remover imagem</button>
+          </div>
+          <button class="btn-fechar-modal" onclick="fecharModal()">Guardar</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- SAVE BAR -->
@@ -435,53 +489,100 @@ function lerTextos() {
 // ── GALERIA ───────────────────────────────────────────
 function renderGaleria() {
   document.getElementById('projetos-lista').innerHTML = projetos.map((p, pi) => `
-    <div class="projeto-item" id="proj-${pi}" data-pi="${pi}" draggable="true">
-      <div class="projeto-header">
+    <div class="projeto-card" data-pi="${pi}" draggable="true">
+      <div class="projeto-card-header">
         <span class="drag-handle" title="Arrastar projeto">⠿</span>
-        <div class="field"><label>Nome do projeto</label><input type="text" value="${esc(p.nome)}" data-pi="${pi}" class="proj-nome"></div>
-        <button class="btn-remover-projeto" onclick="removeProjeto(${pi})">Remover projeto</button>
+        <input type="text" value="${esc(p.nome)}" class="proj-nome" data-pi="${pi}" placeholder="Nome do projeto">
+        <button class="btn-remover-projeto" onclick="removeProjeto(${pi})" title="Remover projeto">✕</button>
       </div>
-      <div class="imagens-lista" id="imgs-${pi}">
-        ${p.imagens.map((img, ii) => renderImagem(pi, ii, img)).join('')}
+      <div class="thumbs-grid" id="thumbs-${pi}">
+        ${p.imagens.map((img, ii) => renderThumb(pi, ii, img)).join('')}
+        <button class="thumb-add" onclick="addImagem(${pi})" title="Adicionar imagem">+</button>
       </div>
-      <button class="btn-add-img" onclick="addImagem(${pi})">+ Adicionar imagem</button>
-      <div class="upload-hint">Podes arrastar o ficheiro ou clicar para fazer upload direto</div>
     </div>`).join('');
   initDragDrop();
 }
 
-function renderImagem(pi, ii, img) {
-  const tagChecks = Object.entries(TAG_LABELS).map(([k, v]) => `
-    <label>
-      <input type="checkbox" data-pi="${pi}" data-ii="${ii}" data-tag="${k}" ${img.tags.includes(k) ? 'checked' : ''}>
-      ${v}
-    </label>`).join('');
-
-  return `<div class="imagem-item" id="img-${pi}-${ii}" data-pi="${pi}" data-ii="${ii}" draggable="true">
-    <div class="drag-handle" title="Arrastar">⠿</div>
-    <div class="imagem-preview" id="prev-${pi}-${ii}">
-      ${img.src ? `<img src="${img.src}" draggable="false" onerror="this.style.display='none'">` : '<span>sem imagem</span>'}
-    </div>
-    <div class="imagem-fields">
-      <input type="text" placeholder="Ficheiro (ex: imagens/foto.jpg)" value="${esc(img.src)}" data-pi="${pi}" data-ii="${ii}" class="img-src" onchange="atualizarPreview(${pi},${ii},this.value)">
-      <input type="text" placeholder="Descrição da imagem (alt)" value="${esc(img.alt)}" data-pi="${pi}" data-ii="${ii}" class="img-alt">
-      <div class="tags-check">${tagChecks}</div>
-      <label style="display:flex;align-items:center;gap:8px;font-size:0.78rem;cursor:pointer;margin-top:4px;">
-        <input type="file" accept="image/*" style="display:none" onchange="uploadImagem(event,${pi},${ii})">
-        <span style="color:var(--accent);text-decoration:underline;" onclick="this.previousElementSibling.click()">📎 Fazer upload de imagem</span>
-      </label>
-    </div>
-    <div class="img-ordem">
-      <button class="btn-ordem" onclick="moverImagem(${pi},${ii},-1)" ${ii === 0 ? 'disabled' : ''} title="Mover para cima">▲</button>
-      <button class="btn-ordem" onclick="moverImagem(${pi},${ii},1)" title="Mover para baixo">▼</button>
-    </div>
-    <button class="btn-remover-img" onclick="removeImagem(${pi},${ii})" title="Remover imagem">✕</button>
+function renderThumb(pi, ii, img) {
+  return `<div class="img-thumb" data-pi="${pi}" data-ii="${ii}" draggable="true" onclick="abrirModal(${pi},${ii})" title="Editar imagem">
+    ${img.src ? `<img src="${img.src}" draggable="false" onerror="this.style.display='none'">` : '<div class="img-thumb-empty">sem img</div>'}
+    <div class="img-thumb-overlay">✏️</div>
   </div>`;
 }
 
-function atualizarPreview(pi, ii, src) {
-  const prev = document.getElementById(`prev-${pi}-${ii}`);
-  if (prev) prev.innerHTML = src ? `<img src="${src}" onerror="this.style.display='none'">` : '<span>sem imagem</span>';
+// ── MODAL ─────────────────────────────────────────────
+let modalPi = null, modalIi = null;
+
+function abrirModal(pi, ii) {
+  modalPi = pi; modalIi = ii;
+  const img = projetos[pi].imagens[ii];
+  document.getElementById('modal-src').value = img.src || '';
+  document.getElementById('modal-alt').value = img.alt || '';
+  document.getElementById('modal-tags').innerHTML = Object.entries(TAG_LABELS).map(([k, v]) =>
+    `<label><input type="checkbox" value="${k}" ${img.tags.includes(k) ? 'checked' : ''}>${v}</label>`
+  ).join('');
+  modalPreviewAtualizar();
+  document.getElementById('img-modal').classList.add('open');
+}
+
+function fecharModal() {
+  if (modalPi === null) return;
+  const img = projetos[modalPi].imagens[modalIi];
+  img.src = document.getElementById('modal-src').value.trim();
+  img.alt = document.getElementById('modal-alt').value.trim();
+  img.tags = [...document.querySelectorAll('#modal-tags input:checked')].map(cb => cb.value);
+  // atualizar thumbnail
+  const thumb = document.querySelector(`.img-thumb[data-pi="${modalPi}"][data-ii="${modalIi}"]`);
+  if (thumb) {
+    thumb.querySelector('img,div.img-thumb-empty')?.remove();
+    const overlay = thumb.querySelector('.img-thumb-overlay');
+    if (img.src) {
+      const el = document.createElement('img');
+      el.src = img.src; el.draggable = false;
+      el.onerror = () => el.style.display = 'none';
+      thumb.insertBefore(el, overlay);
+    } else {
+      const el = document.createElement('div');
+      el.className = 'img-thumb-empty'; el.textContent = 'sem img';
+      thumb.insertBefore(el, overlay);
+    }
+  }
+  document.getElementById('img-modal').classList.remove('open');
+  modalPi = null; modalIi = null;
+}
+
+function modalBackdropClick(e) {
+  if (e.target === document.getElementById('img-modal')) fecharModal();
+}
+
+function modalPreviewAtualizar() {
+  const src = document.getElementById('modal-src').value.trim();
+  const prev = document.getElementById('modal-preview');
+  prev.innerHTML = src ? `<img src="${src}" onerror="this.innerHTML='<span>imagem não encontrada</span>'">` : '<span>sem imagem</span>';
+}
+
+function modalRemover() {
+  if (!confirm('Remover esta imagem do projeto?')) return;
+  projetos[modalPi].imagens.splice(modalIi, 1);
+  document.getElementById('img-modal').classList.remove('open');
+  modalPi = null; modalIi = null;
+  renderGaleria();
+}
+
+async function modalUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  setStatus('A fazer upload...', '');
+  try {
+    const base64 = await fileToBase64(file);
+    const filename = `imagens/${file.name}`;
+    await githubUpload(filename, base64, `upload: ${file.name}`);
+    document.getElementById('modal-src').value = filename;
+    modalPreviewAtualizar();
+    setStatus(`✓ ${file.name} enviado`, 'ok');
+  } catch (e) {
+    setStatus('Erro no upload: ' + e.message, 'erro');
+  }
 }
 
 // ── DRAG & DROP ───────────────────────────────────────
@@ -501,16 +602,12 @@ function fromHandle(e, cls) {
 }
 
 function initDragDrop() {
-  // IMAGENS
-  document.querySelectorAll('.imagem-item').forEach(el => {
+  // IMAGENS (thumbnails)
+  document.querySelectorAll('.img-thumb[data-ii]').forEach(el => {
     el.addEventListener('dragstart', e => {
-      const tag = e.target.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'LABEL' || tag === 'SELECT') {
-        e.preventDefault(); return;
-      }
+      e.stopPropagation();
       dragSrc = { type: 'img', pi: +el.dataset.pi, ii: +el.dataset.ii };
       e.dataTransfer.effectAllowed = 'move';
-      e.stopPropagation();
       setTimeout(() => el.classList.add('dragging'), 0);
     });
     el.addEventListener('dragend', () => {
@@ -520,19 +617,16 @@ function initDragDrop() {
     });
     el.addEventListener('dragover', e => {
       if (!dragSrc || dragSrc.type !== 'img') return;
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       clearDragOver();
       const same = dragSrc.pi === +el.dataset.pi && dragSrc.ii === +el.dataset.ii;
       if (!same) el.classList.add('drag-over');
     });
     el.addEventListener('drop', e => {
       if (!dragSrc || dragSrc.type !== 'img') return;
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       const tPi = +el.dataset.pi, tIi = +el.dataset.ii;
       if (dragSrc.pi === tPi && dragSrc.ii === tIi) return;
-      lerGaleria();
       const [moved] = projetos[dragSrc.pi].imagens.splice(dragSrc.ii, 1);
       projetos[tPi].imagens.splice(tIi, 0, moved);
       dragSrc = null;
@@ -540,8 +634,8 @@ function initDragDrop() {
     });
   });
 
-  // PROJETOS — só arrasta pelo ⠿ do cabeçalho
-  document.querySelectorAll('.projeto-item').forEach(el => {
+  // PROJETOS — pelo handle ⠿
+  document.querySelectorAll('.projeto-card').forEach(el => {
     el.addEventListener('dragstart', e => {
       if (!fromHandle(e, 'drag-handle')) { e.preventDefault(); return; }
       dragSrc = { type: 'proj', pi: +el.dataset.pi };
@@ -564,28 +658,16 @@ function initDragDrop() {
       e.preventDefault();
       const tPi = +el.dataset.pi;
       if (dragSrc.pi === tPi) return;
-      lerGaleria();
       const [moved] = projetos.splice(dragSrc.pi, 1);
       projetos.splice(tPi, 0, moved);
       dragSrc = null;
       renderGaleria();
     });
   });
-
-  // impedir drag nativo das imagens de preview
-  document.querySelectorAll('.imagem-preview img').forEach(img => img.draggable = false);
 }
 
 function addProjeto() {
   projetos.push({ nome: 'Novo Projeto', imagens: [] });
-  renderGaleria();
-}
-
-function moverProjeto(pi, dir) {
-  lerGaleria();
-  const novo = pi + dir;
-  if (novo < 0 || novo >= projetos.length) return;
-  [projetos[pi], projetos[novo]] = [projetos[novo], projetos[pi]];
   renderGaleria();
 }
 
@@ -600,22 +682,8 @@ function addImagem(pi) {
   lerGaleria();
   projetos[pi].imagens.push({ src: '', alt: '', tags: [] });
   renderGaleria();
-}
-
-function removeImagem(pi, ii) {
-  lerGaleria();
-  projetos[pi].imagens.splice(ii, 1);
-  renderGaleria();
-}
-
-
-function moverImagem(pi, ii, dir) {
-  lerGaleria();
-  const imgs = projetos[pi].imagens;
-  const novo = ii + dir;
-  if (novo < 0 || novo >= imgs.length) return;
-  [imgs[ii], imgs[novo]] = [imgs[novo], imgs[ii]];
-  renderGaleria();
+  // abrir modal na nova imagem
+  abrirModal(pi, projetos[pi].imagens.length - 1);
 }
 
 async function uploadImagem(event, pi, ii) {
@@ -626,9 +694,6 @@ async function uploadImagem(event, pi, ii) {
     const base64 = await fileToBase64(file);
     const filename = `imagens/${file.name}`;
     await githubUpload(filename, base64, `upload: ${file.name}`);
-    // update field
-    const srcInput = document.querySelector(`.img-src[data-pi="${pi}"][data-ii="${ii}"]`);
-    if (srcInput) { srcInput.value = filename; atualizarPreview(pi, ii, filename); }
     setStatus(`✓ ${file.name} enviado`, 'ok');
   } catch (e) {
     setStatus('Erro no upload: ' + e.message, 'erro');
@@ -645,17 +710,9 @@ function fileToBase64(file) {
 }
 
 function lerGaleria() {
-  projetos = [];
-  document.querySelectorAll('.projeto-item').forEach((pEl, pi) => {
-    const nome = pEl.querySelector('.proj-nome').value;
-    const imagens = [];
-    pEl.querySelectorAll('.imagem-item').forEach((iEl, ii) => {
-      const src = iEl.querySelector('.img-src').value;
-      const alt = iEl.querySelector('.img-alt').value;
-      const tags = [...iEl.querySelectorAll('input[type=checkbox]:checked')].map(cb => cb.dataset.tag);
-      imagens.push({ src, alt, tags });
-    });
-    projetos.push({ nome, imagens });
+  document.querySelectorAll('.projeto-card').forEach(card => {
+    const pi = +card.dataset.pi;
+    if (projetos[pi]) projetos[pi].nome = card.querySelector('.proj-nome').value;
   });
 }
 
