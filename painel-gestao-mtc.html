@@ -435,7 +435,7 @@ function lerTextos() {
 // ── GALERIA ───────────────────────────────────────────
 function renderGaleria() {
   document.getElementById('projetos-lista').innerHTML = projetos.map((p, pi) => `
-    <div class="projeto-item" id="proj-${pi}" data-pi="${pi}">
+    <div class="projeto-item" id="proj-${pi}" data-pi="${pi}" draggable="true">
       <div class="projeto-header">
         <span class="drag-handle" title="Arrastar projeto">⠿</span>
         <div class="field"><label>Nome do projeto</label><input type="text" value="${esc(p.nome)}" data-pi="${pi}" class="proj-nome"></div>
@@ -457,7 +457,7 @@ function renderImagem(pi, ii, img) {
       ${v}
     </label>`).join('');
 
-  return `<div class="imagem-item" id="img-${pi}-${ii}" data-pi="${pi}" data-ii="${ii}">
+  return `<div class="imagem-item" id="img-${pi}-${ii}" data-pi="${pi}" data-ii="${ii}" draggable="true">
     <div class="drag-handle" title="Arrastar">⠿</div>
     <div class="imagem-preview" id="prev-${pi}-${ii}">
       ${img.src ? `<img src="${img.src}" draggable="false" onerror="this.style.display='none'">` : '<span>sem imagem</span>'}
@@ -486,23 +486,31 @@ function atualizarPreview(pi, ii, src) {
 
 // ── DRAG & DROP ───────────────────────────────────────
 let dragSrc = null;
-let projDragOk = false;
 
 function clearDragOver() {
   document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
 }
 
+function fromHandle(e, cls) {
+  let el = e.target;
+  while (el && el !== e.currentTarget) {
+    if (el.classList && el.classList.contains(cls)) return true;
+    el = el.parentElement;
+  }
+  return false;
+}
+
 function initDragDrop() {
-  // IMAGENS — arrastáveis dentro e entre projetos
+  // IMAGENS
   document.querySelectorAll('.imagem-item').forEach(el => {
-    el.draggable = true;
     el.addEventListener('dragstart', e => {
       const tag = e.target.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'SELECT') {
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'LABEL' || tag === 'SELECT') {
         e.preventDefault(); return;
       }
       dragSrc = { type: 'img', pi: +el.dataset.pi, ii: +el.dataset.ii };
       e.dataTransfer.effectAllowed = 'move';
+      e.stopPropagation();
       setTimeout(() => el.classList.add('dragging'), 0);
     });
     el.addEventListener('dragend', () => {
@@ -532,21 +540,15 @@ function initDragDrop() {
     });
   });
 
-  // PROJETOS — arrastáveis pelo handle
+  // PROJETOS — só arrasta pelo ⠿ do cabeçalho
   document.querySelectorAll('.projeto-item').forEach(el => {
-    const handle = el.querySelector(':scope > .projeto-header > .drag-handle');
-    if (handle) {
-      handle.addEventListener('mousedown', () => { projDragOk = true; el.draggable = true; });
-    }
     el.addEventListener('dragstart', e => {
-      if (!projDragOk) { e.preventDefault(); return; }
-      projDragOk = false;
+      if (!fromHandle(e, 'drag-handle')) { e.preventDefault(); return; }
       dragSrc = { type: 'proj', pi: +el.dataset.pi };
       e.dataTransfer.effectAllowed = 'move';
       setTimeout(() => el.classList.add('dragging'), 0);
     });
     el.addEventListener('dragend', () => {
-      el.draggable = false;
       el.classList.remove('dragging');
       clearDragOver();
       dragSrc = null;
@@ -568,7 +570,6 @@ function initDragDrop() {
       dragSrc = null;
       renderGaleria();
     });
-    el.draggable = false;
   });
 
   // impedir drag nativo das imagens de preview
