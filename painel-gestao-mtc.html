@@ -715,7 +715,8 @@ function initDragDrop() {
 async function dropZoneDrop(e, pi) {
   e.preventDefault(); e.stopPropagation();
   e.currentTarget.classList.remove('drag-over-file');
-  const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/'));
+  const imgExts = /\.(jpe?g|png|gif|webp|avif|svg|bmp|tiff?)$/i;
+  const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/') || imgExts.test(f.name));
   if (!files.length) { setStatus('Nenhuma imagem encontrada no drop', 'erro'); return; }
   // adicionar ao painel imediatamente
   for (const file of files) {
