@@ -61,7 +61,13 @@
   .btn-remover-projeto:hover{ border-color: var(--red); color: var(--red); }
 
   .imagens-lista{ display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-  .imagem-item{ display: grid; grid-template-columns: 72px 1fr auto auto; gap: 10px; align-items: start; background: var(--bg-alt); border-radius: 8px; padding: 10px; }
+  .imagem-item{ display: grid; grid-template-columns: 20px 72px 1fr auto auto; gap: 10px; align-items: start; background: var(--bg-alt); border-radius: 8px; padding: 10px; transition: opacity 0.15s; }
+  .imagem-item.dragging{ opacity: 0.35; }
+  .imagem-item.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
+  .projeto-item.dragging{ opacity: 0.35; }
+  .projeto-item.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
+  .drag-handle{ cursor: grab; color: var(--muted); font-size: 1.1rem; display: flex; align-items: center; justify-content: center; user-select: none; padding-top: 2px; opacity: 0.4; }
+  .drag-handle:hover{ opacity: 1; color: var(--accent); }
   .imagem-preview{ width: 72px; height: 72px; object-fit: cover; border-radius: 6px; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--muted); overflow: hidden; }
   .imagem-preview img{ width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
   .imagem-fields{ display: flex; flex-direction: column; gap: 6px; }
@@ -431,6 +437,7 @@ function renderGaleria() {
   document.getElementById('projetos-lista').innerHTML = projetos.map((p, pi) => `
     <div class="projeto-item" id="proj-${pi}" data-pi="${pi}">
       <div class="projeto-header">
+        <span class="drag-handle" title="Arrastar projeto">⠿</span>
         <div class="field"><label>Nome do projeto</label><input type="text" value="${esc(p.nome)}" data-pi="${pi}" class="proj-nome"></div>
         <button class="btn-remover-projeto" onclick="removeProjeto(${pi})">Remover projeto</button>
       </div>
@@ -440,6 +447,7 @@ function renderGaleria() {
       <button class="btn-add-img" onclick="addImagem(${pi})">+ Adicionar imagem</button>
       <div class="upload-hint">Podes arrastar o ficheiro ou clicar para fazer upload direto</div>
     </div>`).join('');
+  initDragDrop();
 }
 
 function renderImagem(pi, ii, img) {
@@ -450,6 +458,7 @@ function renderImagem(pi, ii, img) {
     </label>`).join('');
 
   return `<div class="imagem-item" id="img-${pi}-${ii}" data-pi="${pi}" data-ii="${ii}">
+    <div class="drag-handle" title="Arrastar">⠿</div>
     <div class="imagem-preview" id="prev-${pi}-${ii}">
       ${img.src ? `<img src="${img.src}" draggable="false" onerror="this.style.display='none'">` : '<span>sem imagem</span>'}
     </div>
@@ -473,6 +482,97 @@ function renderImagem(pi, ii, img) {
 function atualizarPreview(pi, ii, src) {
   const prev = document.getElementById(`prev-${pi}-${ii}`);
   if (prev) prev.innerHTML = src ? `<img src="${src}" onerror="this.style.display='none'">` : '<span>sem imagem</span>';
+}
+
+// ── DRAG & DROP ───────────────────────────────────────
+let dragSrc = null;
+let projDragOk = false;
+
+function clearDragOver() {
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+
+function initDragDrop() {
+  // IMAGENS — arrastáveis dentro e entre projetos
+  document.querySelectorAll('.imagem-item').forEach(el => {
+    el.draggable = true;
+    el.addEventListener('dragstart', e => {
+      const tag = e.target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'SELECT') {
+        e.preventDefault(); return;
+      }
+      dragSrc = { type: 'img', pi: +el.dataset.pi, ii: +el.dataset.ii };
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => el.classList.add('dragging'), 0);
+    });
+    el.addEventListener('dragend', () => {
+      el.classList.remove('dragging');
+      clearDragOver();
+      dragSrc = null;
+    });
+    el.addEventListener('dragover', e => {
+      if (!dragSrc || dragSrc.type !== 'img') return;
+      e.preventDefault();
+      e.stopPropagation();
+      clearDragOver();
+      const same = dragSrc.pi === +el.dataset.pi && dragSrc.ii === +el.dataset.ii;
+      if (!same) el.classList.add('drag-over');
+    });
+    el.addEventListener('drop', e => {
+      if (!dragSrc || dragSrc.type !== 'img') return;
+      e.preventDefault();
+      e.stopPropagation();
+      const tPi = +el.dataset.pi, tIi = +el.dataset.ii;
+      if (dragSrc.pi === tPi && dragSrc.ii === tIi) return;
+      lerGaleria();
+      const [moved] = projetos[dragSrc.pi].imagens.splice(dragSrc.ii, 1);
+      projetos[tPi].imagens.splice(tIi, 0, moved);
+      dragSrc = null;
+      renderGaleria();
+    });
+  });
+
+  // PROJETOS — arrastáveis pelo handle
+  document.querySelectorAll('.projeto-item').forEach(el => {
+    const handle = el.querySelector(':scope > .projeto-header > .drag-handle');
+    if (handle) {
+      handle.addEventListener('mousedown', () => { projDragOk = true; el.draggable = true; });
+    }
+    el.addEventListener('dragstart', e => {
+      if (!projDragOk) { e.preventDefault(); return; }
+      projDragOk = false;
+      dragSrc = { type: 'proj', pi: +el.dataset.pi };
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => el.classList.add('dragging'), 0);
+    });
+    el.addEventListener('dragend', () => {
+      el.draggable = false;
+      el.classList.remove('dragging');
+      clearDragOver();
+      dragSrc = null;
+    });
+    el.addEventListener('dragover', e => {
+      if (!dragSrc || dragSrc.type !== 'proj') return;
+      e.preventDefault();
+      clearDragOver();
+      if (dragSrc.pi !== +el.dataset.pi) el.classList.add('drag-over');
+    });
+    el.addEventListener('drop', e => {
+      if (!dragSrc || dragSrc.type !== 'proj') return;
+      e.preventDefault();
+      const tPi = +el.dataset.pi;
+      if (dragSrc.pi === tPi) return;
+      lerGaleria();
+      const [moved] = projetos.splice(dragSrc.pi, 1);
+      projetos.splice(tPi, 0, moved);
+      dragSrc = null;
+      renderGaleria();
+    });
+    el.draggable = false;
+  });
+
+  // impedir drag nativo das imagens de preview
+  document.querySelectorAll('.imagem-preview img').forEach(img => img.draggable = false);
 }
 
 function addProjeto() {
