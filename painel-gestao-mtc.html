@@ -68,16 +68,18 @@
   .drag-handle{ cursor: grab; color: var(--muted); font-size: 1rem; user-select: none; opacity: 0.4; flex-shrink: 0; }
   .drag-handle:hover{ opacity: 1; color: var(--accent); }
 
-  .thumbs-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .img-thumb{ aspect-ratio: 1/1; border-radius: 8px; overflow: hidden; position: relative; cursor: pointer; background: var(--bg-alt); border: 1px solid var(--line); transition: opacity 0.15s; }
+  .thumbs-grid{ display: flex; flex-wrap: wrap; gap: 5px; max-height: calc(3 * 56px + 2 * 5px); overflow-y: auto; align-content: flex-start; }
+  .img-thumb{ width: 56px; height: 56px; border-radius: 6px; overflow: hidden; position: relative; cursor: pointer; background: var(--bg-alt); border: 1px solid var(--line); transition: opacity 0.15s; flex-shrink: 0; }
   .img-thumb.dragging{ opacity: 0.35; }
   .img-thumb.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
   .img-thumb img{ width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-  .img-thumb-empty{ display: flex; align-items: center; justify-content: center; height: 100%; font-size: 0.7rem; color: var(--muted); }
-  .img-thumb-overlay{ position: absolute; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; color: #fff; font-size: 1.1rem; }
+  .img-thumb-empty{ display: flex; align-items: center; justify-content: center; height: 100%; font-size: 0.6rem; color: var(--muted); text-align: center; }
+  .img-thumb-overlay{ position: absolute; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; color: #fff; font-size: 1rem; }
   .img-thumb:hover .img-thumb-overlay{ opacity: 1; }
-  .thumb-add{ aspect-ratio: 1/1; border-radius: 8px; border: 1.5px dashed var(--accent); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--accent); opacity: 0.6; }
+  .thumb-add{ width: 56px; height: 56px; border-radius: 6px; border: 1.5px dashed var(--accent); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--accent); opacity: 0.6; flex-shrink: 0; }
   .thumb-add:hover{ opacity: 1; background: #f0f9f4; }
+  .drop-zone{ width: 100%; min-height: 80px; border: 2px dashed var(--line); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--muted); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+  .drop-zone.drag-over-file{ border-color: var(--accent); background: #f0f9f4; color: var(--accent); }
 
   .btn-add-projeto{ font-size: 0.85rem; color: var(--accent); background: none; border: 1px dashed var(--accent); border-radius: 8px; padding: 12px; cursor: pointer; width: 100%; margin-top: 8px; }
   .btn-add-projeto:hover{ background: #f0f9f4; }
@@ -495,9 +497,11 @@ function renderGaleria() {
         <input type="text" value="${esc(p.nome)}" class="proj-nome" data-pi="${pi}" placeholder="Nome do projeto">
         <button class="btn-remover-projeto" onclick="removeProjeto(${pi})" title="Remover projeto">✕</button>
       </div>
-      <div class="thumbs-grid" id="thumbs-${pi}">
-        ${p.imagens.map((img, ii) => renderThumb(pi, ii, img)).join('')}
-        <button class="thumb-add" onclick="addImagem(${pi})" title="Adicionar imagem">+</button>
+      <div class="thumbs-grid" id="thumbs-${pi}" data-pi="${pi}">
+        ${p.imagens.length === 0
+          ? `<div class="drop-zone" onclick="addImagem(${pi})">Arrasta imagens aqui ou clica para adicionar</div>`
+          : p.imagens.map((img, ii) => renderThumb(pi, ii, img)).join('') + `<button class="thumb-add" onclick="addImagem(${pi})" title="Adicionar imagem">+</button>`
+        }
       </div>
     </div>`).join('');
   initDragDrop();
@@ -630,6 +634,40 @@ function initDragDrop() {
       const [moved] = projetos[dragSrc.pi].imagens.splice(dragSrc.ii, 1);
       projetos[tPi].imagens.splice(tIi, 0, moved);
       dragSrc = null;
+      renderGaleria();
+    });
+  });
+
+  // DROP DE FICHEIROS DO SISTEMA
+  document.querySelectorAll('.thumbs-grid').forEach(grid => {
+    const pi = +grid.dataset.pi;
+    grid.addEventListener('dragover', e => {
+      if (dragSrc) return; // é drag interno, ignorar
+      if (!e.dataTransfer.types.includes('Files')) return;
+      e.preventDefault(); e.stopPropagation();
+      grid.querySelector('.drop-zone')?.classList.add('drag-over-file');
+    });
+    grid.addEventListener('dragleave', () => {
+      grid.querySelector('.drop-zone')?.classList.remove('drag-over-file');
+    });
+    grid.addEventListener('drop', async e => {
+      if (dragSrc) return;
+      const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/'));
+      if (!files.length) return;
+      e.preventDefault(); e.stopPropagation();
+      grid.querySelector('.drop-zone')?.classList.remove('drag-over-file');
+      for (const file of files) {
+        setStatus(`A fazer upload de ${file.name}...`, '');
+        try {
+          const base64 = await fileToBase64(file);
+          const filename = `imagens/${file.name}`;
+          await githubUpload(filename, base64, `upload: ${file.name}`);
+          projetos[pi].imagens.push({ src: filename, alt: file.name.replace(/\.[^.]+$/, ''), tags: [] });
+          setStatus(`✓ ${file.name} enviado`, 'ok');
+        } catch (err) {
+          setStatus(`Erro: ${err.message}`, 'erro');
+        }
+      }
       renderGaleria();
     });
   });
