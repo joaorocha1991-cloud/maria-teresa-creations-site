@@ -650,7 +650,11 @@ function initDragDrop() {
   document.querySelectorAll('.thumbs-grid').forEach(grid => {
     const pi = +grid.dataset.pi;
     grid.addEventListener('dragover', e => {
-      if (dragSrc) return; // é drag interno, ignorar
+      // drag interno de imagem de outro projeto
+      if (dragSrc && dragSrc.type === 'img' && dragSrc.pi !== pi) {
+        e.preventDefault(); e.stopPropagation(); return;
+      }
+      if (dragSrc) return;
       if (!e.dataTransfer.types.includes('Files')) return;
       e.preventDefault(); e.stopPropagation();
       grid.querySelector('.drop-zone')?.classList.add('drag-over-file');
@@ -659,6 +663,16 @@ function initDragDrop() {
       grid.querySelector('.drop-zone')?.classList.remove('drag-over-file');
     });
     grid.addEventListener('drop', async e => {
+      // drag interno de imagem de outro projeto
+      if (dragSrc && dragSrc.type === 'img') {
+        if (dragSrc.pi === pi) return;
+        e.preventDefault(); e.stopPropagation();
+        const [moved] = projetos[dragSrc.pi].imagens.splice(dragSrc.ii, 1);
+        projetos[pi].imagens.push(moved);
+        dragSrc = null;
+        renderGaleria();
+        return;
+      }
       if (dragSrc) return;
       const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/'));
       if (!files.length) return;
