@@ -84,14 +84,6 @@
         ]
       },
       {
-        "src": "imagens/board-game-insert-3.jpg",
-        "alt": "Insert panda panda",
-        "tags": [
-          "impressao-3d",
-          "board-game"
-        ]
-      },
-      {
         "src": "imagens/board-game-insert-4.jpg",
         "alt": "insert Hola hoo",
         "tags": [
@@ -182,6 +174,19 @@
         "alt": "Card Game Would you rather",
         "tags": [
           "imprimives"
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "Inserts Board games",
+    "imagens": [
+      {
+        "src": "imagens/board-game-insert-3.jpg",
+        "alt": "Insert panda panda",
+        "tags": [
+          "impressao-3d",
+          "board-game"
         ]
       }
     ]
