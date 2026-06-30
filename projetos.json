@@ -84,6 +84,32 @@
         ]
       },
       {
+        "src": "imagens/bookreview.jpg",
+        "alt": "Bookmarks Book Review",
+        "tags": [
+          "imprimives"
+        ]
+      },
+      {
+        "src": "imagens/love-cupons.jpg",
+        "alt": "Love cupons",
+        "tags": [
+          "imprimives"
+        ]
+      },
+      {
+        "src": "imagens/wouldyourather.jpg",
+        "alt": "Card Game Would you rather",
+        "tags": [
+          "imprimives"
+        ]
+      }
+    ]
+  },
+  {
+    "nome": "Inserts Board games",
+    "imagens": [
+      {
         "src": "imagens/board-game-insert-4.jpg",
         "alt": "insert Hola hoo",
         "tags": [
@@ -132,15 +158,15 @@
         ]
       },
       {
-        "src": "imagens/board-game-insert-11.jpg",
-        "alt": "Insert Ticket to Ride",
+        "src": "imagens/board-game-insert-3.jpg",
+        "alt": "Insert panda panda",
         "tags": [
           "impressao-3d",
           "board-game"
         ]
       },
       {
-        "src": "imagens/board-game-insert-10.jpg",
+        "src": "imagens/board-game-insert-11.jpg",
         "alt": "Insert Ticket to Ride",
         "tags": [
           "impressao-3d",
@@ -156,34 +182,8 @@
         ]
       },
       {
-        "src": "imagens/bookreview.jpg",
-        "alt": "Bookmarks Book Review",
-        "tags": [
-          "imprimives"
-        ]
-      },
-      {
-        "src": "imagens/love-cupons.jpg",
-        "alt": "Love cupons",
-        "tags": [
-          "imprimives"
-        ]
-      },
-      {
-        "src": "imagens/wouldyourather.jpg",
-        "alt": "Card Game Would you rather",
-        "tags": [
-          "imprimives"
-        ]
-      }
-    ]
-  },
-  {
-    "nome": "Inserts Board games",
-    "imagens": [
-      {
-        "src": "imagens/board-game-insert-3.jpg",
-        "alt": "Insert panda panda",
+        "src": "imagens/board-game-insert-10.jpg",
+        "alt": "Insert Ticket to Ride",
         "tags": [
           "impressao-3d",
           "board-game"
