@@ -57,6 +57,7 @@
 
   /* GALERIA */
   .projetos-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 700px){ .projetos-grid{ grid-template-columns: 1fr; } }
   .projeto-card{ background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px; transition: opacity 0.15s; }
   .projeto-card.dragging{ opacity: 0.35; }
   .projeto-card.drag-over{ outline: 2px dashed var(--accent); outline-offset: 2px; }
@@ -721,6 +722,136 @@ function initDragDrop() {
       const [moved] = projetos.splice(dragSrc.pi, 1);
       projetos.splice(tPi, 0, moved);
       dragSrc = null;
+      renderGaleria();
+    });
+  });
+
+  initTouchDragDrop();
+}
+
+function initTouchDragDrop() {
+  let td = null;
+
+  function mkGhost(el, tx, ty) {
+    const r = el.getBoundingClientRect();
+    const g = el.cloneNode(true);
+    Object.assign(g.style, {
+      position: 'fixed', zIndex: '9999', pointerEvents: 'none',
+      width: r.width + 'px', height: r.height + 'px',
+      left: (tx - r.width / 2) + 'px', top: (ty - r.height / 2) + 'px',
+      opacity: '0.8', borderRadius: '8px',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.35)',
+      transform: 'scale(1.08)', transition: 'none',
+    });
+    document.body.appendChild(g);
+    return g;
+  }
+
+  function finish(tx, ty) {
+    const saved = td ? { ...td } : null;
+    if (td?.ghost) td.ghost.remove();
+    if (td?.el) td.el.style.opacity = '';
+    clearDragOver();
+    td = null;
+    return saved;
+  }
+
+  function hit(tx, ty, type) {
+    for (const el of document.elementsFromPoint(tx, ty)) {
+      if (type === 'img') {
+        if (el.classList.contains('img-thumb') && el.dataset.ii != null) return { el, kind: 'thumb' };
+        const grid = el.closest?.('.thumbs-grid');
+        if (grid?.dataset.pi != null) return { el: grid, kind: 'grid' };
+      }
+      if (type === 'proj') {
+        if (el.classList.contains('projeto-card') && el.dataset.pi != null) return { el, kind: 'card' };
+      }
+    }
+    return null;
+  }
+
+  // MINIATURAS
+  document.querySelectorAll('.img-thumb[data-ii]').forEach(el => {
+    el.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      td = { type: 'img', pi: +el.dataset.pi, ii: +el.dataset.ii, el, ghost: null, sx: t.clientX, sy: t.clientY, moved: false };
+    }, { passive: true });
+
+    el.addEventListener('touchmove', e => {
+      if (!td || td.type !== 'img') return;
+      const t = e.touches[0];
+      if (!td.moved) {
+        if (Math.hypot(t.clientX - td.sx, t.clientY - td.sy) < 8) return;
+        const r = el.getBoundingClientRect();
+        td.ghost = mkGhost(el, t.clientX, t.clientY);
+        el.style.opacity = '0.3';
+        td.moved = true;
+      }
+      e.preventDefault();
+      const r = el.getBoundingClientRect();
+      td.ghost.style.left = (t.clientX - r.width / 2) + 'px';
+      td.ghost.style.top  = (t.clientY - r.height / 2) + 'px';
+      clearDragOver();
+      const tgt = hit(t.clientX, t.clientY, 'img');
+      if (tgt) {
+        const sameThumb = tgt.kind === 'thumb' && +tgt.el.dataset.pi === td.pi && +tgt.el.dataset.ii === td.ii;
+        if (!sameThumb) tgt.el.classList.add('drag-over');
+      }
+    }, { passive: false });
+
+    el.addEventListener('touchend', e => {
+      if (!td?.moved) { finish(); return; }
+      const t = e.changedTouches[0];
+      const tgt = hit(t.clientX, t.clientY, 'img');
+      const src = finish();
+      if (!tgt || !src) return;
+      const tPi = +tgt.el.dataset.pi;
+      const tIi = tgt.kind === 'thumb' ? +tgt.el.dataset.ii : null;
+      if (src.pi === tPi && src.ii === tIi) return;
+      const [moved] = projetos[src.pi].imagens.splice(src.ii, 1);
+      if (tIi != null) projetos[tPi].imagens.splice(tIi, 0, moved);
+      else projetos[tPi].imagens.push(moved);
+      renderGaleria();
+    });
+  });
+
+  // PROJETOS (handle)
+  document.querySelectorAll('.projeto-card').forEach(card => {
+    const handle = card.querySelector('.drag-handle');
+    if (!handle) return;
+    handle.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      td = { type: 'proj', pi: +card.dataset.pi, el: card, ghost: null, sx: t.clientX, sy: t.clientY, moved: false };
+    }, { passive: true });
+
+    handle.addEventListener('touchmove', e => {
+      if (!td || td.type !== 'proj') return;
+      const t = e.touches[0];
+      if (!td.moved) {
+        if (Math.hypot(t.clientX - td.sx, t.clientY - td.sy) < 8) return;
+        td.ghost = mkGhost(card, t.clientX, t.clientY);
+        card.style.opacity = '0.3';
+        td.moved = true;
+      }
+      e.preventDefault();
+      const r = card.getBoundingClientRect();
+      td.ghost.style.left = (t.clientX - r.width / 2) + 'px';
+      td.ghost.style.top  = (t.clientY - r.height / 2) + 'px';
+      clearDragOver();
+      const tgt = hit(t.clientX, t.clientY, 'proj');
+      if (tgt && +tgt.el.dataset.pi !== td.pi) tgt.el.classList.add('drag-over');
+    }, { passive: false });
+
+    handle.addEventListener('touchend', e => {
+      if (!td?.moved) { finish(); return; }
+      const t = e.changedTouches[0];
+      const tgt = hit(t.clientX, t.clientY, 'proj');
+      const src = finish();
+      if (!tgt || !src) return;
+      const tPi = +tgt.el.dataset.pi;
+      if (src.pi === tPi) return;
+      const [moved] = projetos.splice(src.pi, 1);
+      projetos.splice(tPi, 0, moved);
       renderGaleria();
     });
   });
