@@ -110,6 +110,13 @@
         "tags": [
           "luminarias"
         ]
+      },
+      {
+        "src": "imagens/porta-chaves-adega.jpg",
+        "alt": "Porta-chaves laser",
+        "tags": [
+          "laser"
+        ]
       }
     ]
   },
