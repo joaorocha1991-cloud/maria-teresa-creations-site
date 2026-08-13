@@ -73,14 +73,16 @@
         "src": "imagens/luminarias-2.jpg",
         "alt": "Luminária decorativa infantil personalizada em impressão 3D",
         "tags": [
-          "luminarias"
+          "luminarias",
+          "acrilico"
         ]
       },
       {
         "src": "imagens/luminarias-1.jpg",
         "alt": "Luminária para quarto de criança feita em impressão 3D sob encomenda",
         "tags": [
-          "luminarias"
+          "luminarias",
+          "acrilico"
         ]
       },
       {
@@ -114,7 +116,9 @@
       {
         "src": "imagens/Acrilico-capa-de-livro.png",
         "alt": "Jarra em forma de capa de livro",
-        "tags": []
+        "tags": [
+          "acrilico"
+        ]
       }
     ]
   },
