@@ -105,18 +105,16 @@
         ]
       },
       {
-        "src": "imagens/WhatsApp Image 2026-06-24 at 22.58.06.jpeg",
-        "alt": "Impressao direta acrilico",
-        "tags": [
-          "luminarias"
-        ]
-      },
-      {
         "src": "imagens/porta-chaves-adega.jpg",
         "alt": "Porta-chaves laser",
         "tags": [
           "laser"
         ]
+      },
+      {
+        "src": "imagens/Acrilico-capa-de-livro.png",
+        "alt": "Jarra em forma de capa de livro",
+        "tags": []
       }
     ]
   },
